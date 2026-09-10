@@ -4,3 +4,8 @@ node_modules/
 out/
 .env*
 .impeccable/*.local.json
+
+# Next.js and tooling
+next-env.d.ts
+*.tsbuildinfo
+.vercel
