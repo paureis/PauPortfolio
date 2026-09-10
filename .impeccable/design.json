@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-10T20:30:00-04:00",
+  "title": "Design System: Alvaro Reis portfolio",
+  "extensions": {
+    "colorMeta": {
+      "lamp-amber": {
+        "role": "primary",
+        "displayName": "Lamp Amber",
+        "canonical": "#e8a54b",
+        "tonalRamp": ["#2a1a05", "#4a2f0c", "#6d4614", "#925f1e", "#b87b2c", "#e8a54b", "#f2c581", "#f9e3bf"]
+      },
+      "room-base": {
+        "role": "neutral",
+        "displayName": "Room Base",
+        "canonical": "#1f1712",
+        "tonalRamp": ["#1f1712", "#2b1f18", "#3d2d24", "#524033", "#6b5647", "#8a725f", "#ab937d", "#d2bfa9"]
+      },
+      "room-lift": {
+        "role": "neutral",
+        "displayName": "Room Lift",
+        "canonical": "#2b1f18",
+        "tonalRamp": ["#1f1712", "#2b1f18", "#3d2d24", "#524033", "#6b5647", "#8a725f", "#ab937d", "#d2bfa9"]
+      },
+      "text-cream": {
+        "role": "neutral",
+        "displayName": "Cream",
+        "canonical": "#f3e9d8",
+        "tonalRamp": ["#2a2318", "#4a3f2d", "#6b5c45", "#8e7b5f", "#b09c7e", "#c9b9a3", "#e3d6c2", "#f3e9d8"]
+      },
+      "text-dim": {
+        "role": "neutral",
+        "displayName": "Dim Cream",
+        "canonical": "#c9b9a3",
+        "tonalRamp": ["#2a2318", "#4a3f2d", "#6b5c45", "#8e7b5f", "#b09c7e", "#c9b9a3", "#e3d6c2", "#f3e9d8"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Positioning line and station headings. Face unresolved until Issue 2." },
+      "lead": { "displayName": "Lead", "purpose": "Supporting line under a heading, in Dim Cream." },
+      "body": { "displayName": "Body", "purpose": "All running text, 65 to 75 character measure." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "station-move", "value": "one orchestrated camera move per station change; durations set by the camera director", "purpose": "The only motion on the site. No per-element entrances." }
+    ],
+    "breakpoints": []
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "description": "Synthesized from the tokens; no button exists in the placeholder yet. Lamp Amber fill, room-dark text, square corners, amber focus ring.",
+      "html": "<button class=\"ds-btn-primary\">Download resume</button>",
+      "css": ".ds-btn-primary { background: var(--lamp-amber, #e8a54b); color: var(--room-base, #1f1712); font: 600 1rem/1.2 Inter, 'Segoe UI', system-ui, sans-serif; padding: 0.875rem 1.5rem; border: 0; border-radius: 0; cursor: pointer; transition: background 160ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-primary:hover { background: #f2c581; } .ds-btn-primary:focus-visible { outline: 2px solid var(--lamp-amber, #e8a54b); outline-offset: 3px; }"
+    },
+    {
+      "name": "Text Link",
+      "kind": "custom",
+      "description": "Synthesized from the tokens. Cream text with an amber underline that thickens on hover.",
+      "html": "<a class=\"ds-link\" href=\"#\">See the work</a>",
+      "css": ".ds-link { color: var(--text-cream, #f3e9d8); text-decoration: underline; text-decoration-color: var(--lamp-amber, #e8a54b); text-decoration-thickness: 1px; text-underline-offset: 0.2em; transition: text-decoration-thickness 120ms ease-out; } .ds-link:hover { text-decoration-thickness: 2px; } .ds-link:focus-visible { outline: 2px solid var(--lamp-amber, #e8a54b); outline-offset: 3px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Desk at Dusk",
+    "overview": "The site is a room, not a page. Everything on screen is lit the way Pau's desk is lit at seven in the evening in Miramar: a desk lamp and two monitors doing most of the work, the RGB in the keyboard and the PC case adding small points of color, and a South Florida sunset through the window behind the side monitor. The visual system is that light. The dark base is a warm room in low light, never a black canvas. Cream text is what paper and screens look like under a lamp. Amber is the lamp itself, and it is the only accent that reaches every surface. Coral and teal belong to the window and appear only where its light would fall. Blue-white and RGB pink and blue belong to the objects that emit them and nowhere else.\n\nThe register is calm and specific. Content reads like a person wrote it, in first person and sentence case, and the type carries hierarchy through size and weight, never through labels, caps, or decoration. One camera move per station change is the site's motion; individual elements do not animate their way in. Miami Vice is a place the room is in, not a style the site wears: no neon type, chrome, palm silhouettes, or retro grids. The sunset through the window is the whole reference.",
+    "keyCharacteristics": [
+      "Warm dark base that reads as a lit room, never pure or tinted black.",
+      "Cream text with one amber accent; every other color is tied to a light source in the scene.",
+      "One display family with personality and one quiet body sans; no italic serif accents, no monospace for labels.",
+      "Hierarchy from size and weight alone; no eyebrows, kickers, all-caps labels, or numbered markers outside true sequences.",
+      "One orchestrated camera move per station; no per-element entrance animation; hover only on interactive things."
+    ],
+    "rules": [
+      { "name": "The Light Source Rule", "body": "Every color other than the neutrals and amber must be traceable to something in the room that emits it. Coral and teal only where the window's light would reach. Blue-white only on screens. Pink and blue only on the keyboard and the case. If you cannot name the emitter, you cannot use the color.", "section": "colors" },
+      { "name": "The Warm Dark Rule", "body": "The base is #1f1712 and stays warm. No pure black, no cool near-black, no gray standing in for black. Depth comes from lifting toward Room Lift, not from dropping toward black.", "section": "colors" },
+      { "name": "The Two Families Rule", "body": "One display family, one body family, nothing else. No italic serif accents. No monospace for labels, dates, numbers, or anything that is not literally code.", "section": "typography" },
+      { "name": "The No Eyebrow Rule", "body": "Headings carry their own weight. No kicker, eyebrow, all-caps label, or section number above a heading. Numbered markers exist only on the lifecycle and the experience timeline, which are actual sequences.", "section": "typography" },
+      { "name": "The No Halo Rule", "body": "No zero-offset colored glows, no glass or blur as decoration. If something should look lit, it is lit in the scene.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep the base at Room Base (#1f1712) and lift, never darken, to show depth.",
+      "Do use Lamp Amber (#e8a54b) for the primary action, links, and focus rings, and keep it under a tenth of any screen.",
+      "Do write copy in first person, sentence case, plain verbs; the site talks like Pau.",
+      "Do give every interactive element a visible focus indicator in Lamp Amber.",
+      "Do hold body measure between 65 and 75 characters and balance headings.",
+      "Do make one orchestrated camera move per station change and nothing else."
+    ],
+    "donts": [
+      "Don't use pure black, cool near-black, or gray in place of the warm neutrals.",
+      "Don't put coral, teal, blue-white, or RGB colors on anything that does not emit them in the room.",
+      "Don't add eyebrows, kickers, all-caps labels, or numbered section markers outside the lifecycle and timeline.",
+      "Don't use italic serif accents or monospace for labels and data.",
+      "Don't animate individual elements in on scroll; hover effects only on things that are interactive.",
+      "Don't reach for neon type, chrome, palm silhouettes, retro grids, or anything that reads as a Miami Vice theme.",
+      "Don't add a loader, splash, or click-to-enter; the document renders first and the scene fades in."
+    ]
+  }
+}
