@@ -1,16 +1,16 @@
 # ISSUES.md
 
-Eleven vertical slices from `docs/PRD.md`. Each crosses every layer it touches and can be verified on its own. Lanes follow AGENTS.md. AFK means an agent can complete it without a human decision; HITL means Pau reviews something by eye before it's done.
+Twelve vertical slices from `docs/PRD.md`. Each crosses every layer it touches and can be verified on its own. Lanes follow AGENTS.md. AFK means an agent can complete it without a human decision; HITL means Pau reviews something by eye before it's done. Section numbers match the GitHub issue numbers in this repository.
 
 Dependency order:
 
 ```
 1 ──┬── 2 ──── 4 ──┐
-    │              ├── 5 ──┬── 8 ──┐
-    └── 3 ──┬── 6 ─┘       │       ├── 11
-            └── 7a ── 7b ──┘       │
-                           9 ──────┘
+    │              ├── 5 ──┬── 9 ──┐
+    └── 3 ──┬── 6 ─┘       │       ├── 12
+            └── 7 ──── 8 ──┘       │
                            10 ─────┘
+                           11 ─────┘
 ```
 
 ---
@@ -123,7 +123,7 @@ The room gets its final materials and baked lighting: warm lamp and screen light
 
 ---
 
-## 7a. Nightly GitHub activity data
+## 7. Nightly GitHub activity data
 **Lane:** Codex
 **Type:** AFK
 **Blocked by:** 1
@@ -139,10 +139,10 @@ A scheduled workflow fetches Pau's contribution calendar and a few recent-activi
 
 ---
 
-## 7b. GitHub activity and curated repos on the side monitor
+## 8. GitHub activity and curated repos on the side monitor
 **Lane:** Claude Code
 **Type:** AFK
-**Blocked by:** 5, 7a
+**Blocked by:** 5, 7
 
 ### Description
 The contribution calendar renders in the site's palette and type on the side monitor beneath the how-I-work content, with three or four curated repositories from the content model linked below it. A stale or missing data file degrades to hiding the calendar, never to an error.
@@ -155,7 +155,7 @@ The contribution calendar renders in the site's palette and type on the side mon
 
 ---
 
-## 8. Credentials wall, off the clock, and contact stations
+## 9. Credentials wall, off the clock, and contact stations
 **Lane:** Claude Code
 **Type:** AFK
 **Blocked by:** 5, 6
@@ -172,7 +172,7 @@ Credentials render on the wall frames at the wall station, headline tier promine
 
 ---
 
-## 9. No-WebGL poster, reduced motion, and accessibility pass
+## 10. No-WebGL poster, reduced motion, and accessibility pass
 **Lane:** Claude Code
 **Type:** AFK
 **Blocked by:** 5
@@ -188,7 +188,7 @@ Without WebGL or on load failure, the site shows a still of the wide shot and th
 
 ---
 
-## 10. Social preview, metadata, and privacy-friendly counts
+## 11. Social preview, metadata, and privacy-friendly counts
 **Lane:** Claude Code
 **Type:** AFK
 **Blocked by:** 6
@@ -203,10 +203,10 @@ The link previews correctly on LinkedIn, Slack, and iMessage with a rendered ima
 
 ---
 
-## 11. Performance verification and launch
+## 12. Performance verification and launch
 **Lane:** both, Pau merges
 **Type:** HITL
-**Blocked by:** 8, 9, 10, 7b
+**Blocked by:** 8, 9, 10, 11
 
 ### Description
 The site is measured against every budget in the PRD on real devices and current browsers, the domain goes live, and the final content check is done. AZ-104 is flipped if the result is in.
