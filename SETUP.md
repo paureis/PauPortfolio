@@ -1,197 +1,111 @@
-# SETUP.md: getting the workspace ready
+# SETUP.md: how the workspace is set up
 
-These are the steps you do by hand, once, before either agent starts. Everything is terminal-first. Cursor is only your editor. Budget an evening.
-
-Commands below are what the tools documented as of September 2026. Where a step says "verify against the README," do that, because agent tooling changes monthly.
+This is the one-time setup as it actually is, recorded after it was done. The day-to-day routine is `docs/LOOP.md`; nothing here repeats it. If you rebuild the machine, this is the list.
 
 ---
 
-## 0. Decide the repo name and make it
+## 0. Repository
 
-Create a public GitHub repository. Public is part of the pitch: the "how I work" section says the site was built by two agents, and the commit history and PR reviews are the proof. Suggested name: `alvaroreis.dev` or `portfolio`.
+Public GitHub repository `paureis/PauPortfolio`. Public is part of the pitch: the "how I work" section says the site was built by two agents, and the commit history and PR reviews are the proof.
 
-```bash
-gh repo create alvaroreis.dev --public --clone
-cd alvaroreis.dev
-```
+`main` is protected: pull request required, the `Build` check required and up to date, conversation resolution required, no force pushes, no deletions, enforced for admins. Required approvals is zero because both agents and Pau share one GitHub account and GitHub does not count the author's own approval. The reviewing agent's verdict, posted as a PR comment, is the gate.
 
-Add the workspace files from this handoff bundle into the repo root:
-
-```
-AGENTS.md            # shared working instructions, read by Codex
-CLAUDE.md            # imports AGENTS.md, read by Claude Code
-docs/PRD.md          # the PRD
-docs/SCENE-CONTRACT.md
-docs/ISSUES.md       # paste into GitHub Issues (step 7)
-reference/           # your five desk photos, gitignored (see below)
-```
-
-Add `reference/` to `.gitignore` before the first commit. The photos are for the Blender lane on your machine, not for the public repo.
-
-Commit and push. The scaffold (Next.js, Impeccable init, CI) is Issue 1 and Claude Code does it; you don't hand-scaffold anything.
+`reference/` holds the five desk photos for the Blender lane and is gitignored. It never reaches the remote.
 
 ---
 
-## 1. Worktrees: one per agent
+## 1. Three checkouts
 
-Both agents work on the same repo at the same time, so each gets its own checkout and its own branches. Never run both agents in the same directory.
-
-```bash
-# from the repo root
-git worktree add ../alvaroreis.dev-claude -b claude/workspace
-git worktree add ../alvaroreis.dev-codex -b codex/workspace
-```
-
-You'll have three folders side by side:
+One clone and two worktrees, side by side:
 
 ```
-alvaroreis.dev/          # main, where you review and merge
-alvaroreis.dev-claude/   # Claude Code runs here
-alvaroreis.dev-codex/    # Codex runs here
+C:\PauPortfolio          main. Pau reviews, merges, and runs sync and ship here.
+C:\PauPortfolio-claude   Claude Code's worktree, resting branch claude/workspace.
+C:\PauPortfolio-codex    Codex's worktree, resting branch codex/workspace.
 ```
 
-Each agent creates a branch per issue from `main` inside its own worktree (`claude/2-content-model`, `codex/3-scene-blockout`) and opens a PR. Branch naming convention: `<agent>/<issue-number>-<short-slug>`.
+Created from the clone with:
+
+```powershell
+git worktree add ..\PauPortfolio-claude -b claude/workspace
+git worktree add ..\PauPortfolio-codex -b codex/workspace
+```
+
+Each agent branches per issue from `main` inside its own worktree (`claude/2-content-model`, `codex/3-scene-blockout`) and opens a PR. AGENTS.md makes each agent check its own folder at session start and stop if it is in the wrong one.
 
 ---
 
-## 2. Impeccable for both agents
+## 2. Where each agent runs
 
-Run the installer once per agent. It detects the tool and installs the right build.
-
-```bash
-npx impeccable install
-```
-
-Pick Claude Code, then run it again and pick Codex CLI. For Claude Code the installer may instead tell you to open `/plugin`, choose Discover, and install Impeccable from the marketplace; either path is fine.
-
-Then, in the Claude worktree, start Claude Code and run:
-
-```
-/impeccable init
-```
-
-This writes `PRODUCT.md` and `DESIGN.md`. Answer its questions from the PRD (audience, purpose, principles). Commit both files to `main` before Codex starts, so both agents read the same design system. This is also part of Issue 1, so Claude Code will prompt you through it.
-
-Later, `npx impeccable update` keeps both installs current.
+- **Claude Code** runs in a Cursor terminal tab opened on `C:\PauPortfolio-claude`. The `cc` command from `profile.ps1` puts you there and starts it.
+- **Codex** runs in the Codex desktop app, project PauPortfolio, pointed at the `C:\PauPortfolio-codex` worktree, Local mode. There is no Codex terminal tab.
+- **Pau** works from a Cursor terminal tab on `C:\PauPortfolio`. Cursor is only the editor.
 
 ---
 
-## 3. Blender and its MCP server
+## 3. Impeccable
 
-### Install Blender
+Installed from the universal zip and committed to the repository, so both agents read the same skill files: `.claude/` for Claude Code, `.codex/` and `.agents/` for Codex, `.cursor/` for Cursor. Each carries the skill, the subagent definitions, and a hooks file. The design hook runs on UI edits in both agents' installs and reports findings as they work.
 
-Download from blender.org. If you can get 5.1 or newer, use the official Blender Lab MCP add-on. If you're on an older version, the community server works on 3.0+.
-
-### Option A: official Blender Lab MCP (Blender 5.1+)
-
-Follow the setup on the Blender Lab MCP page. Note the quirk: with drag-and-drop install you do it twice, first to add the Blender Lab extension repository, second to install the MCP add-on itself. Then register the server with each agent using the server details from that page.
-
-### Option B: community blender-mcp (any recent Blender)
-
-Verify the exact commands against the README at github.com/ahujasid/blender-mcp; they change.
-
-1. Install `uv` if you don't have it.
-2. In Blender: install the add-on from the repo, enable it under Edit > Preferences > Add-ons, then press N in the 3D viewport, open the BlenderMCP tab, and click Connect. It should report running on port 9876.
-3. Register with each agent from its worktree:
-
-```bash
-# Claude Code
-claude mcp add blender -- uvx blender-mcp
-
-# Codex CLI (also covers the Codex desktop app and IDE extension; they share ~/.codex/config.toml)
-codex mcp add blender -- uvx blender-mcp
-codex mcp list   # blender should show as enabled
-```
-
-Don't run `uvx blender-mcp` yourself in a terminal; the agent starts it.
-
-### Rules of the road
-
-- Blender is a single live session. Only one agent works in it at a time. By default that's Codex (see AGENTS.md).
-- Blender must be open with the add-on connected before the agent's session starts.
-- The agent asks Blender to render and looks at the render. You look at the render too. If it's wrong, say what's wrong in plain terms ("the second monitor is too far from the first," "the window should be taller than the monitor").
+`PRODUCT.md` was written through `/impeccable init` with answers from the PRD. `DESIGN.md` and `.impeccable/design.json` record the visual system; Issue 2 rewrites `DESIGN.md` from the built document page. `npx impeccable update` refreshes the installs.
 
 ---
 
-## 4. Azure Static Web Apps
+## 4. Blender and its MCP server
 
-Do this after Issue 1 produces a buildable Next.js static export, or do it now against an empty app and let CI fill it in.
+Still to do before Issue 3 starts. As of Issue 2 neither agent has a `blender` MCP server registered.
 
-1. In the Azure portal (or `az staticwebapp create`), create a Static Web App on the Free plan in East US 2, source GitHub, pointing at the repo and the `main` branch.
-2. Build settings: app location `/`, output location `out`, no API.
-3. Azure adds a GitHub Actions workflow and the `AZURE_STATIC_WEB_APPS_API_TOKEN` secret to the repo. Claude Code will adjust the workflow in Issue 1 to build the static export correctly.
-4. Preview environments for pull requests are on by default; each PR gets its own URL. That's where cross-review happens.
+1. Install Blender from blender.org.
+2. Install the blender-mcp add-on (verify the steps against github.com/ahujasid/blender-mcp; they change), enable it under Edit > Preferences > Add-ons, then press N in the 3D viewport, open the BlenderMCP tab, and click Connect. It reports running on port 9876.
+3. Register it with Codex: `codex mcp add blender -- uvx blender-mcp`, then `codex mcp list` to confirm. The desktop app shares `~/.codex/config.toml` with the CLI. Codex starts the server; nobody runs `uvx blender-mcp` by hand.
 
----
+Rules of the road:
 
-## 5. Domain
-
-Check availability for `alvaroreis.dev` first, then `paureis.dev`, then `alpaureis.com`. Buy from Cloudflare Registrar or Namecheap (Azure's own domain purchase doesn't offer `.dev`).
-
-Point it at the Static Web App: in the portal, add a custom domain, then create the CNAME (for `www` or a subdomain) or the ALIAS/A records it asks for at the registrar. Azure issues the TLS certificate automatically. `.dev` is HTTPS-only, which is fine here.
+- Blender is a single live session. Only the 3D lane touches it, one session at a time.
+- Blender must be open with the add-on connected before Codex's session starts.
+- Codex renders and looks at the render. Pau looks too and says what is wrong in plain terms.
 
 ---
 
-## 6. GitHub token for the nightly activity refresh
+## 5. Azure Static Web Apps
 
-The default `GITHUB_TOKEN` that Actions provides can usually read your public contribution calendar through the GraphQL API. Codex will try that first in Issue 7. If it can't, create a fine-grained personal access token with read-only access to your profile and add it as a repository secret named `CONTRIBUTIONS_TOKEN`.
+Resource group `pauportfolio-rg` in East US 2, Static Web App `pauportfolio-swa` on the Free plan, tagged `project=pauportfolio`, with no linked source. All deploys come from the GitHub Actions workflow in `.github/workflows/build-and-deploy.yml` using the repository secret `AZURE_STATIC_WEB_APPS_API_TOKEN`.
 
----
+- Every push to every branch runs the checks and the static build.
+- A push to `main` deploys production at `gentle-forest-0a9db720f.3.azurestaticapps.net`.
+- Every pull request gets a preview at `gentle-forest-0a9db720f-<PR number>.eastus2.3.azurestaticapps.net`, posted on the PR and removed when it closes. That is where cross-review happens.
 
-## 7. Create the issues
-
-Open `docs/ISSUES.md` and create one GitHub issue per entry. Label each with `lane:claude` or `lane:codex` as marked, and add the `blocked-by` numbers to the issue body once you know them.
-
-```bash
-gh issue create --title "..." --body-file <(sed -n '/## 1\./,/## 2\./p' docs/ISSUES.md) --label lane:claude
-```
-
-Or paste them by hand; there are eleven.
+The subscription also hosts unrelated `tspro-*` resource groups. Portfolio resources never go there.
 
 ---
 
-## 8. Kick off
+## 6. Domain
 
-Start Claude Code in its worktree and paste the kickoff prompt at the bottom of this file. Start Codex in its worktree and paste its prompt. Both prompts tell the agent to read AGENTS.md first and to stop and confirm its plan before touching anything.
-
-Order matters for the first two days:
-
-1. Claude Code: Issue 1 (workspace and deploy). Codex waits, or does Blender install checks.
-2. After Issue 1 merges: Claude Code takes Issue 2 (content and fallback page). Codex takes Issue 3 (scene block-out). These run in parallel.
-3. From there, each agent pulls the next issue in its lane whose blockers are done.
+Not bought yet. Preferred `alvaroreis.dev`, then `paureis.dev`, then `alpaureis.com`. Buy from Cloudflare Registrar or Namecheap (Azure's own domain purchase does not offer `.dev`), add it as a custom domain on the Static Web App, create the records it asks for, and Azure issues the certificate. This is Issue 12.
 
 ---
 
-## Kickoff prompt: Claude Code
+## 7. GitHub token for the nightly activity refresh
 
-```
-Read AGENTS.md, then docs/PRD.md and docs/SCENE-CONTRACT.md. You are the web lane.
+The default `GITHUB_TOKEN` in Actions can usually read the public contribution calendar through the GraphQL API. Codex tries that first in Issue 7. If it cannot, create a fine-grained personal access token with read-only access to the profile and add it as a repository secret named `CONTRIBUTIONS_TOKEN`. Because `main` requires a pull request, the workflow opens a PR with the refreshed data rather than pushing to `main`.
 
-Before doing anything else, tell me:
-1. What you understand the project to be, in three sentences.
-2. Which issue you're taking and why it's unblocked.
-3. Your plan for that issue as a short numbered list.
-Then wait for my approval.
+---
 
-Start with Issue 1: workspace and deploy. When it's done, open a PR and stop; Codex reviews it.
-```
+## 8. Issues
 
-## Kickoff prompt: Codex
+`docs/ISSUES.md` is the source; one GitHub issue per section, numbered to match, labeled `lane:claude` or `lane:codex`.
 
-```
-Read AGENTS.md, then docs/PRD.md and docs/SCENE-CONTRACT.md. You are the 3D and data lane.
+---
 
-Before doing anything else, tell me:
-1. What you understand the project to be, in three sentences.
-2. Confirm you can reach Blender through the MCP server (ping it).
-3. Which issue you're taking and your plan as a short numbered list.
-Then wait for my approval.
+## 9. Pau's ops folder
 
-Issue 3 (scene block-out) is yours once Issue 1 has merged. Until then, verify the Blender connection and read the room layout section of the PRD and the reference photos in reference/.
-```
+`C:\Users\pau\pau-ops` holds the routine's scripts. It is outside the repository on purpose: it knows the absolute paths of all three checkouts.
 
-## Review prompt (either agent, for the other's PR)
+| File | Does |
+|---|---|
+| `profile.ps1` | Paste into `$PROFILE`. Defines `pp`, `cc`, `sync`, `ship`. |
+| `sync.ps1` | Brings all three checkouts up to `origin/main`. Leaves a lane alone if it is mid-issue on an unmerged branch. |
+| `ship.ps1 -Pr <n>` | Resolves open review threads, squash-merges the PR, deletes the remote branch, then runs `sync`. |
+| `LOOP.md` | The routine. A copy lives at `docs/LOOP.md` so both agents can read it. |
 
-```
-Review PR #<n> cold. You have no prior context on this change; read the PR description, the diff, and AGENTS.md's definition of done. Check the preview URL if one exists. Post a review with gh pr review: request changes for anything that violates the definition of done, the scene contract, or the content rules in AGENTS.md; approve only if you'd merge it yourself. Be specific and short.
-```
+When `LOOP.md` changes in `pau-ops`, copy it to `docs/LOOP.md` in the next PR.

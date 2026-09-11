@@ -22,14 +22,18 @@ Both lanes share `docs/SCENE-CONTRACT.md`. The web lane consumes it; the 3D lane
 
 ## Workflow
 
-1. Work only inside your own git worktree. Never run in the other agent's worktree or on `main` directly.
-2. One issue at a time. Take the lowest-numbered issue in your lane whose blockers are merged. Say which one you're taking before you start.
-3. Branch from `main`: `<agent>/<issue-number>-<short-slug>`.
-4. Before you write code, state your plan as a short numbered list and wait for approval from Pau.
-5. Commit in small, described steps. Commit messages say what changed and why, in plain language, no emoji, no prefixes.
-6. Open a PR with `gh pr create`. The description covers: what the issue asked for, what you did, what you didn't do and why, how you verified it, and the preview URL. Then stop.
-7. The other agent reviews cold. Address every comment or explain why not. Pau merges.
-8. After merge, delete the branch and pull `main` into your worktree before starting the next issue.
+The day-to-day routine, the prompts Pau pastes, and the `sync` and `ship` commands are in `docs/LOOP.md`. This section is the rules the routine assumes.
+
+1. At the start of every session, before anything else, run `git rev-parse --show-toplevel` and `git branch --show-current`. If the folder is not your lane's worktree (`PauPortfolio-claude` for Claude Code, `PauPortfolio-codex` for Codex), stop and tell Pau before doing anything else.
+2. Work only inside your own git worktree. Never run in the other agent's worktree or on `main` directly.
+3. One issue at a time. Take the lowest-numbered issue in your lane whose blockers are merged. Say which one you're taking before you start.
+4. Branch from `main`: `<agent>/<issue-number>-<short-slug>`.
+5. Before you write code, state your plan as a short numbered list and wait for approval from Pau.
+6. Some inputs only Pau has: the resume PDF, the verification link and earned date for each credential, contact details, the curated repository list. Ask for them when you need them. Never invent a placeholder for one and never ship without it.
+7. Commit in small, described steps. Commit messages say what changed and why, in plain language, no emoji, no prefixes.
+8. Open a PR with `gh pr create`. The description covers: what the issue asked for, what you did, what you didn't do and why, how you verified it, and the preview URL. Then stop.
+9. The other agent reviews cold. Address every comment or explain why not. Pau merges with `ship`.
+10. After merge, `sync` deletes the branch and pulls `main` into your worktree before the next issue starts.
 
 Never merge your own PR. Never force-push a shared branch. Never rewrite history on `main`.
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-10T20:30:00-04:00",
+  "generatedAt": "2026-09-11T00:00:00-04:00",
   "title": "Design System: Alvaro Reis portfolio",
   "extensions": {
     "colorMeta": {
@@ -8,6 +8,12 @@
         "role": "primary",
         "displayName": "Lamp Amber",
         "canonical": "#e8a54b",
+        "tonalRamp": ["#2a1a05", "#4a2f0c", "#6d4614", "#925f1e", "#b87b2c", "#e8a54b", "#f2c581", "#f9e3bf"]
+      },
+      "lamp-amber-bright": {
+        "role": "primary",
+        "displayName": "Lamp Amber Bright",
+        "canonical": "#f2c581",
         "tonalRamp": ["#2a1a05", "#4a2f0c", "#6d4614", "#925f1e", "#b87b2c", "#e8a54b", "#f2c581", "#f9e3bf"]
       },
       "room-base": {
@@ -20,6 +26,12 @@
         "role": "neutral",
         "displayName": "Room Lift",
         "canonical": "#2b1f18",
+        "tonalRamp": ["#1f1712", "#2b1f18", "#3d2d24", "#524033", "#6b5647", "#8a725f", "#ab937d", "#d2bfa9"]
+      },
+      "room-rule": {
+        "role": "neutral",
+        "displayName": "Room Rule",
+        "canonical": "#3d2d24",
         "tonalRamp": ["#1f1712", "#2b1f18", "#3d2d24", "#524033", "#6b5647", "#8a725f", "#ab937d", "#d2bfa9"]
       },
       "text-cream": {
@@ -36,62 +48,123 @@
       }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Positioning line and station headings. Face unresolved until Issue 2." },
-      "lead": { "displayName": "Lead", "purpose": "Supporting line under a heading, in Dim Cream." },
-      "body": { "displayName": "Body", "purpose": "All running text, 65 to 75 character measure." }
+      "display": { "displayName": "Display", "purpose": "The positioning line in the hero, the page's one h1. Bricolage Grotesque 600, balanced, measure capped at 20ch." },
+      "headline": { "displayName": "Headline", "purpose": "Station headings (h2). Bricolage Grotesque 600, balanced, 1.5rem below to the material." },
+      "title": { "displayName": "Title", "purpose": "Entry titles and sub-list titles (h3) and headline-tier credential names. Bricolage Grotesque 600; 1.25rem, 1.375rem from 48rem." },
+      "lead": { "displayName": "Lead", "purpose": "Supporting line under a heading, in Dim Cream. 1.125rem, 1.25rem from 48rem." },
+      "body": { "displayName": "Body", "purpose": "All running text and list items, measure capped at 70ch. 1rem, 1.125rem from 48rem." },
+      "label": { "displayName": "Label", "purpose": "The emphasized line inside a list item and the h4 labels inside a work entry. Inter 600 at body size, sentence case; weight is the whole difference." }
     },
     "shadows": [],
     "motion": [
-      { "name": "station-move", "value": "one orchestrated camera move per station change; durations set by the camera director", "purpose": "The only motion on the site. No per-element entrances." }
+      { "name": "action-fill", "value": "background 160ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "The primary action brightening to Lamp Amber Bright on hover. The only transition on the document." },
+      { "name": "station-move", "value": "one orchestrated camera move per station change; durations set by the camera director in Issue 4", "purpose": "The only motion on the site once the scene lands. No per-element entrances." }
     ],
-    "breakpoints": []
+    "breakpoints": [
+      { "name": "wide", "value": "48rem" }
+    ]
   },
   "components": [
     {
-      "name": "Primary Button",
+      "name": "Primary Action",
       "kind": "button",
-      "description": "Synthesized from the tokens; no button exists in the placeholder yet. Lamp Amber fill, room-dark text, square corners, amber focus ring.",
-      "html": "<button class=\"ds-btn-primary\">Download resume</button>",
-      "css": ".ds-btn-primary { background: var(--lamp-amber, #e8a54b); color: var(--room-base, #1f1712); font: 600 1rem/1.2 Inter, 'Segoe UI', system-ui, sans-serif; padding: 0.875rem 1.5rem; border: 0; border-radius: 0; cursor: pointer; transition: background 160ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-primary:hover { background: #f2c581; } .ds-btn-primary:focus-visible { outline: 2px solid var(--lamp-amber, #e8a54b); outline-offset: 3px; }"
+      "refersTo": "action-primary",
+      "description": "The one filled action on the page, an anchor styled as a button. Lamp Amber fill, Room Base text, square corners; brightens on hover, amber ring on focus.",
+      "html": "<a class=\"ds-action-primary\" href=\"#work\">See the work</a>",
+      "css": ".ds-action-primary { display: inline-block; padding: 0.875rem 1.5rem; background: var(--lamp-amber, #e8a54b); color: var(--room-base, #1f1712); font: 600 1rem/1.5 var(--font-body, Inter, 'Segoe UI', system-ui, sans-serif); text-decoration: none; border: 0; border-radius: 0; transition: background 160ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-action-primary:hover { background: var(--lamp-amber-bright, #f2c581); } .ds-action-primary:focus-visible { outline: 2px solid var(--lamp-amber, #e8a54b); outline-offset: 3px; }"
+    },
+    {
+      "name": "Secondary Action",
+      "kind": "button",
+      "refersTo": "action-secondary",
+      "description": "A text link in Inter 500 with vertical padding so it aligns beside the primary action. Cream text, amber underline, no fill.",
+      "html": "<a class=\"ds-action-secondary\" href=\"#\" download>Download resume</a>",
+      "css": ".ds-action-secondary { display: inline-block; padding: 0.875rem 0; color: var(--text-cream, #f3e9d8); font: 500 1rem/1.5 var(--font-body, Inter, 'Segoe UI', system-ui, sans-serif); text-decoration: underline; text-decoration-color: var(--lamp-amber, #e8a54b); text-decoration-thickness: 1px; text-underline-offset: 0.18em; } .ds-action-secondary:hover { text-decoration-thickness: 2px; } .ds-action-secondary:focus-visible { outline: 2px solid var(--lamp-amber, #e8a54b); outline-offset: 3px; }"
     },
     {
       "name": "Text Link",
       "kind": "custom",
-      "description": "Synthesized from the tokens. Cream text with an amber underline that thickens on hover.",
-      "html": "<a class=\"ds-link\" href=\"#\">See the work</a>",
-      "css": ".ds-link { color: var(--text-cream, #f3e9d8); text-decoration: underline; text-decoration-color: var(--lamp-amber, #e8a54b); text-decoration-thickness: 1px; text-underline-offset: 0.2em; transition: text-decoration-thickness 120ms ease-out; } .ds-link:hover { text-decoration-thickness: 2px; } .ds-link:focus-visible { outline: 2px solid var(--lamp-amber, #e8a54b); outline-offset: 3px; }"
+      "refersTo": "link-text",
+      "description": "Cream text inheriting its surroundings, 1px amber underline at 0.18em offset that thickens to 2px on hover with no transition.",
+      "html": "<p class=\"ds-link-context\">Sole engineer on a platform. <a class=\"ds-link\" href=\"#\">Verify</a></p>",
+      "css": ".ds-link-context { color: var(--text-cream, #f3e9d8); font: 400 1rem/1.5 var(--font-body, Inter, 'Segoe UI', system-ui, sans-serif); } .ds-link { color: inherit; text-decoration: underline; text-decoration-color: var(--lamp-amber, #e8a54b); text-decoration-thickness: 1px; text-underline-offset: 0.18em; } .ds-link:hover { text-decoration-thickness: 2px; } .ds-link:focus-visible { outline: 2px solid var(--lamp-amber, #e8a54b); outline-offset: 3px; }"
+    },
+    {
+      "name": "Station",
+      "kind": "custom",
+      "refersTo": "station",
+      "description": "One section of the document: a 1px Room Rule hairline, 3rem of room, an h2 in the headline tier, an optional Dim Cream lead line, then the material.",
+      "html": "<section class=\"ds-station\"><h2 class=\"ds-station-heading\">How I work</h2><p class=\"ds-lead\">Plan, implement, independent review, verify, close out.</p><p class=\"ds-station-body\">Every change goes through the same five phases.</p></section>",
+      "css": ".ds-station { padding-top: 3rem; border-top: 1px solid var(--room-rule, #3d2d24); color: var(--text-cream, #f3e9d8); font: 400 1rem/1.5 var(--font-body, Inter, 'Segoe UI', system-ui, sans-serif); } .ds-station-heading { margin: 0 0 1.5rem; font: 600 clamp(1.5rem, 1.25vw + 1.125rem, 2rem)/1.2 var(--font-display, 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif); letter-spacing: -0.01em; text-wrap: balance; } .ds-lead { margin: 0 0 1.5rem; color: var(--text-dim, #c9b9a3); font-size: 1.125rem; } .ds-station-body { margin: 0; max-width: 70ch; }"
+    },
+    {
+      "name": "Work Entry",
+      "kind": "card",
+      "description": "A flat article: title in the title tier, Dim Cream role line, summary, then sentence-case h4 labels in Inter 600 over bulleted lists. No border, no fill; entries are 3rem apart.",
+      "html": "<article class=\"ds-entry\"><h3 class=\"ds-entry-title\">Talent Scout Pro</h3><p class=\"ds-entry-role\">Sole engineer, 2024 to present</p><p class=\"ds-entry-summary\">A multi-tenant recruiting platform used by two healthcare organizations.</p><h4 class=\"ds-entry-label\">What changed</h4><ul class=\"ds-entry-list\"><li>Sourcing time went from 12 hours to under 8 minutes.</li><li>Zero client-reported errors since launch.</li></ul></article>",
+      "css": ".ds-entry { color: var(--text-cream, #f3e9d8); font: 400 1rem/1.5 var(--font-body, Inter, 'Segoe UI', system-ui, sans-serif); } .ds-entry-title { margin: 0; font: 600 1.25rem/1.25 var(--font-display, 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif); letter-spacing: -0.005em; } .ds-entry-role { margin: 0.25rem 0 0; color: var(--text-dim, #c9b9a3); } .ds-entry-summary { margin: 1rem 0 0; max-width: 70ch; } .ds-entry-label { margin: 1.5rem 0 0.5rem; font-size: 1rem; font-weight: 600; } .ds-entry-list { margin: 0; padding-left: 1.25rem; max-width: 70ch; } .ds-entry-list li + li { margin-top: 0.5rem; } .ds-entry-list li::marker { color: var(--text-dim, #c9b9a3); }"
+    },
+    {
+      "name": "Numbered Sequence",
+      "kind": "custom",
+      "refersTo": "sequence-marker",
+      "description": "The lifecycle and the timeline: an ordered list with native markers removed and a CSS counter drawn cream at 600 in a 2rem first column. The only numbered markers on the page.",
+      "html": "<ol class=\"ds-sequence\"><li><span class=\"ds-sequence-name\">Plan</span><span class=\"ds-sequence-description\">Write the plan as a numbered list and wait for approval.</span></li><li><span class=\"ds-sequence-name\">Implement</span><span class=\"ds-sequence-description\">Small commits that say what changed and why.</span></li><li><span class=\"ds-sequence-name\">Independent review</span><span class=\"ds-sequence-description\">The other agent reviews cold.</span></li></ol>",
+      "css": ".ds-sequence { list-style: none; margin: 0; padding: 0; counter-reset: step; color: var(--text-cream, #f3e9d8); font: 400 1rem/1.5 var(--font-body, Inter, 'Segoe UI', system-ui, sans-serif); } .ds-sequence li { display: grid; grid-template-columns: 2rem 1fr; grid-template-areas: 'n name' 'n description'; gap: 0.125rem 0.5rem; counter-increment: step; } .ds-sequence li + li { margin-top: 1rem; } .ds-sequence li::before { content: counter(step); grid-area: n; font-weight: 600; } .ds-sequence-name { grid-area: name; font-weight: 600; } .ds-sequence-description { grid-area: description; }"
+    },
+    {
+      "name": "Credential Row",
+      "kind": "custom",
+      "refersTo": "credential-row",
+      "description": "A row under a 1px Room Rule hairline: name, issuer and status in Dim Cream, and a Verify link with an optional code. Headline tier sets the name in the display face; from 48rem the verify link moves to a 12rem right column.",
+      "html": "<ul class=\"ds-credentials\"><li class=\"ds-credential ds-credential-headline\"><span class=\"ds-credential-name\">AWS Certified Solutions Architect, Associate</span><span class=\"ds-credential-issuer\">Amazon Web Services</span><span class=\"ds-credential-status\">Earned March 2026, valid through March 2029</span><span class=\"ds-credential-verify\"><a class=\"ds-credential-link\" href=\"#\">Verify</a><span class=\"ds-credential-code\">Code ABC123</span></span></li><li class=\"ds-credential\"><span class=\"ds-credential-name\">Azure Administrator Associate</span><span class=\"ds-credential-issuer\">Microsoft</span><span class=\"ds-credential-status\">In progress</span></li></ul>",
+      "css": ".ds-credentials { list-style: none; margin: 0; padding: 0; color: var(--text-cream, #f3e9d8); font: 400 1rem/1.5 var(--font-body, Inter, 'Segoe UI', system-ui, sans-serif); } .ds-credential { display: grid; align-content: start; gap: 0.125rem; padding-block: 1rem; border-top: 1px solid var(--room-rule, #3d2d24); } .ds-credential:first-child { border-top: 0; padding-top: 0; } .ds-credential-name { font-weight: 600; } .ds-credential-headline .ds-credential-name { font: 600 1.25rem/1.25 var(--font-display, 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif); } .ds-credential-issuer, .ds-credential-status, .ds-credential-code { color: var(--text-dim, #c9b9a3); } .ds-credential-verify { display: grid; gap: 0.125rem; justify-items: start; } .ds-credential-link { color: inherit; text-decoration: underline; text-decoration-color: var(--lamp-amber, #e8a54b); text-decoration-thickness: 1px; text-underline-offset: 0.18em; } .ds-credential-link:hover { text-decoration-thickness: 2px; } .ds-credential-link:focus-visible { outline: 2px solid var(--lamp-amber, #e8a54b); outline-offset: 3px; } @media (min-width: 48rem) { .ds-credential { grid-template-columns: 1fr 12rem; grid-template-areas: 'name verify' 'issuer verify' 'status verify'; column-gap: 1.5rem; } .ds-credential-name { grid-area: name; } .ds-credential-issuer { grid-area: issuer; } .ds-credential-status { grid-area: status; } .ds-credential-verify { grid-area: verify; align-self: start; } }"
+    },
+    {
+      "name": "Off-the-Clock Grid",
+      "kind": "custom",
+      "description": "Short items as a title in Inter 600 over a detail line, one column on phones and two equal columns from 48rem. No bullets, no borders, no fills.",
+      "html": "<ul class=\"ds-off-the-clock\"><li><span class=\"ds-off-the-clock-title\">Counter-Strike</span><span>Faceit level 10.</span></li><li><span class=\"ds-off-the-clock-title\">Soccer</span><span>Weekends, when it is not raining.</span></li><li><span class=\"ds-off-the-clock-title\">Training</span><span>Most mornings.</span></li><li><span class=\"ds-off-the-clock-title\">South Florida</span><span>Miramar, the desk faces the sunset.</span></li></ul>",
+      "css": ".ds-off-the-clock { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; color: var(--text-cream, #f3e9d8); font: 400 1rem/1.5 var(--font-body, Inter, 'Segoe UI', system-ui, sans-serif); } .ds-off-the-clock li { display: grid; align-content: start; gap: 0.125rem; } .ds-off-the-clock-title { font-weight: 600; } @media (min-width: 48rem) { .ds-off-the-clock { grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; } }"
     }
   ],
   "narrative": {
     "northStar": "The Desk at Dusk",
-    "overview": "The site is a room, not a page. Everything on screen is lit the way Pau's desk is lit at seven in the evening in Miramar: a desk lamp and two monitors doing most of the work, the RGB in the keyboard and the PC case adding small points of color, and a South Florida sunset through the window behind the side monitor. The visual system is that light. The dark base is a warm room in low light, never a black canvas. Cream text is what paper and screens look like under a lamp. Amber is the lamp itself, and it is the only accent that reaches every surface. Coral and teal belong to the window and appear only where its light would fall. Blue-white and RGB pink and blue belong to the objects that emit them and nowhere else.\n\nThe register is calm and specific. Content reads like a person wrote it, in first person and sentence case, and the type carries hierarchy through size and weight, never through labels, caps, or decoration. One camera move per station change is the site's motion; individual elements do not animate their way in. Miami Vice is a place the room is in, not a style the site wears: no neon type, chrome, palm silhouettes, or retro grids. The sunset through the window is the whole reference.",
+    "overview": "The site is a room, not a page. Everything on screen is lit the way Pau's desk is lit at seven in the evening in Miramar: a desk lamp and two monitors doing most of the work, the RGB in the keyboard and the PC case adding small points of color, and a South Florida sunset through the window behind the side monitor. The visual system is that light. The dark base is a warm room in low light, never a black canvas. Cream text is what paper and screens look like under a lamp. Amber is the lamp itself, and it is the only accent that reaches every surface. Coral and teal belong to the window and appear only where its light would fall. Blue-white and RGB pink and blue belong to the objects that emit them and nowhere else.\n\nThe document is a straight read: one column, six stations top to bottom, the hero a full viewport. It refuses the card grid, the hero-metric strip, the eyebrow, and the numbered section marker. Type carries the hierarchy through two faces and size alone. Bricolage Grotesque at 600 gives the positioning line, station headings, and entry titles a voice with some character; Inter carries everything else without comment. Separation between things is a hairline in the room's own brown, never a box, a fill, or a shadow.\n\nThe register is calm and specific. Content reads like a person wrote it, in first person and sentence case. Nothing on the document moves except in response to the reader: a link underline thickens, the one filled action brightens. The camera move per station change is the site's only choreography, and it belongs to the scene. Miami Vice is a place the room is in, not a style the site wears: no neon type, chrome, palm silhouettes, or retro grids. The sunset through the window is the whole reference.",
     "keyCharacteristics": [
       "Warm dark base that reads as a lit room, never pure or tinted black.",
       "Cream text with one amber accent; every other color is tied to a light source in the scene.",
-      "One display family with personality and one quiet body sans; no italic serif accents, no monospace for labels.",
-      "Hierarchy from size and weight alone; no eyebrows, kickers, all-caps labels, or numbered markers outside true sequences.",
+      "Bricolage Grotesque 600 for the three heading tiers, Inter for everything else; no italic serif accents, no monospace for labels.",
+      "Hierarchy from size and weight alone; no eyebrows, kickers, all-caps labels, or numbered markers outside the lifecycle and the timeline.",
+      "Square corners, hairline rules, no shadows, no cards.",
       "One orchestrated camera move per station; no per-element entrance animation; hover only on interactive things."
     ],
     "rules": [
       { "name": "The Light Source Rule", "body": "Every color other than the neutrals and amber must be traceable to something in the room that emits it. Coral and teal only where the window's light would reach. Blue-white only on screens. Pink and blue only on the keyboard and the case. If you cannot name the emitter, you cannot use the color.", "section": "colors" },
-      { "name": "The Warm Dark Rule", "body": "The base is #1f1712 and stays warm. No pure black, no cool near-black, no gray standing in for black. Depth comes from lifting toward Room Lift, not from dropping toward black.", "section": "colors" },
-      { "name": "The Two Families Rule", "body": "One display family, one body family, nothing else. No italic serif accents. No monospace for labels, dates, numbers, or anything that is not literally code.", "section": "typography" },
-      { "name": "The No Eyebrow Rule", "body": "Headings carry their own weight. No kicker, eyebrow, all-caps label, or section number above a heading. Numbered markers exist only on the lifecycle and the experience timeline, which are actual sequences.", "section": "typography" },
-      { "name": "The No Halo Rule", "body": "No zero-offset colored glows, no glass or blur as decoration. If something should look lit, it is lit in the scene.", "section": "elevation" }
+      { "name": "The Warm Dark Rule", "body": "The base is Room Base and stays warm. No pure black, no cool near-black, no gray standing in for black. Depth comes from lifting toward Room Lift and Room Rule, not from dropping toward black.", "section": "colors" },
+      { "name": "The One Amber Text Rule", "body": "Amber is a light on things, not a text color. It fills the primary action, underlines links, rings focus, and colors the hero name. No other text is set in amber at rest.", "section": "colors" },
+      { "name": "The Two Families Rule", "body": "One display family, one body family, nothing else. Bricolage carries the h1, h2, h3, and headline credential names; Inter carries everything below that. No italic serif accents. No monospace for labels, dates, codes, or anything that is not literally code. A credential's verification code is body text in Dim Cream.", "section": "typography" },
+      { "name": "The No Eyebrow Rule", "body": "Headings carry their own weight. No kicker, eyebrow, all-caps label, or section number above a heading. The h4 labels inside a work entry sit below the title and read as sentences; they are sub-headings, not kickers. Numbered markers exist only on the lifecycle and the experience timeline, which are actual sequences.", "section": "typography" },
+      { "name": "The No Halo Rule", "body": "No zero-offset colored glows, no glass or blur as decoration, no drop shadows to lift a surface. If something should look lit, it is lit in the scene.", "section": "elevation" },
+      { "name": "The Hairline Rule", "body": "Separation is a 1px line in Room Rule, or it is white space. Never a box, a background fill, a card, or a thicker border.", "section": "elevation" }
     ],
     "dos": [
       "Do keep the base at Room Base (#1f1712) and lift, never darken, to show depth.",
-      "Do use Lamp Amber (#e8a54b) for the primary action, links, and focus rings, and keep it under a tenth of any screen.",
+      "Do use Lamp Amber (#e8a54b) for the primary action, link underlines, focus rings, selection, and the hero name only, and keep it under a tenth of any screen.",
+      "Do separate with a 1px Room Rule (#3d2d24) hairline or with white space, never with a fill, a box, or a shadow.",
+      "Do set the h1, h2, h3, and headline credential names in Bricolage Grotesque 600, and everything else in Inter.",
       "Do write copy in first person, sentence case, plain verbs; the site talks like Pau.",
-      "Do give every interactive element a visible focus indicator in Lamp Amber.",
-      "Do hold body measure between 65 and 75 characters and balance headings.",
+      "Do give every interactive element the global focus ring: 2px Lamp Amber at 3px offset.",
+      "Do hold body measure at 70ch, balance headings, and use only the three spacing steps between sections.",
       "Do make one orchestrated camera move per station change and nothing else."
     ],
     "donts": [
       "Don't use pure black, cool near-black, or gray in place of the warm neutrals.",
       "Don't put coral, teal, blue-white, or RGB colors on anything that does not emit them in the room.",
+      "Don't set text in amber at rest anywhere but the hero name.",
       "Don't add eyebrows, kickers, all-caps labels, or numbered section markers outside the lifecycle and timeline.",
-      "Don't use italic serif accents or monospace for labels and data.",
+      "Don't use italic serif accents or monospace for labels, dates, or codes.",
+      "Don't add a radius, a box shadow, a card, a background fill behind content, or a Room Lift hairline (it disappears on Room Base).",
       "Don't animate individual elements in on scroll; hover effects only on things that are interactive.",
       "Don't reach for neon type, chrome, palm silhouettes, retro grids, or anything that reads as a Miami Vice theme.",
       "Don't add a loader, splash, or click-to-enter; the document renders first and the scene fades in."
