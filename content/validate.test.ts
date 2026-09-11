@@ -273,6 +273,24 @@ describe("validateSite", () => {
         "contact.resume must be a root-relative path to a .pdf",
       ]);
     });
+
+    it("keeps the resume path inside public/", () => {
+      for (const path of [
+        "/../outside.pdf",
+        "/files/../../outside.pdf",
+        "/./resume.pdf",
+        "/%2e%2e/outside.pdf",
+        "/files\\resume.pdf",
+        "//server/share.pdf",
+        "/resume.pdf?x=1",
+        "/resume.PDF",
+      ]) {
+        expect(validateSite(broken((s) => (s.contact.resume = path))), path).toEqual([
+          "contact.resume must be a root-relative path to a .pdf",
+        ]);
+      }
+      expect(validateSite(broken((s) => (s.contact.resume = "/files/Alvaro-Reis.pdf")))).toEqual([]);
+    });
   });
 
   describe("how I work, stations, timeline, education, off the clock", () => {
@@ -287,6 +305,25 @@ describe("validateSite", () => {
         "howIWork.repositories[0].href must be an https URL",
       ]);
       expect(validateSite(broken((s) => (s.howIWork.repositories = [])))).toEqual([]);
+      expect(validateSite(broken((s) => delete s.howIWork.repositories))).toEqual([
+        "howIWork.repositories must be a list",
+      ]);
+    });
+
+    it("requires every list to exist even when it may be empty", () => {
+      expect(validateSite(broken((s) => delete s.work[0].decisions))).toEqual([
+        "work[0].decisions must be a list",
+      ]);
+      expect(validateSite(broken((s) => (s.work[0].decisions = "one decision")))).toEqual([
+        "work[0].decisions must be a list",
+      ]);
+      expect(validateSite(broken((s) => (s.work[0].decisions = [])))).toEqual([]);
+      expect(validateSite(broken((s) => delete s.howIWork.practice))).toEqual([
+        "howIWork.practice must be a list",
+      ]);
+      expect(validateSite(broken((s) => (s.howIWork.practice = ["ok", ""])))).toEqual([
+        "howIWork.practice[1] is missing or empty",
+      ]);
       expect(validateSite(broken((s) => delete s.howIWork.source))).toEqual(["howIWork.source is missing"]);
       expect(validateSite(broken((s) => (s.howIWork.source.href = "github.com/paureis")))).toEqual([
         "howIWork.source.href must be an https URL",

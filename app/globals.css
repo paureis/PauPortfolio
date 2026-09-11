@@ -149,6 +149,12 @@ li::marker {
   font-weight: 600;
 }
 
+.hero-location {
+  color: var(--text-dim);
+  font-weight: 400;
+  margin-left: 0.5rem;
+}
+
 .hero-positioning {
   font-family: var(--font-display);
   font-size: var(--text-display);

@@ -54,6 +54,15 @@ function isHttps(value: unknown): boolean {
   }
 }
 
+// A path the static host serves from public/: root-relative, plain
+// segments only. Dot segments, backslashes, percent-encoding, and query or
+// fragment characters are refused so the path cannot resolve outside
+// public/ or differ between the build gate and the deployed URL.
+export function isPublicPdfPath(value: string): boolean {
+  if (!/^\/[A-Za-z0-9._-]+(\/[A-Za-z0-9._-]+)*\.pdf$/.test(value)) return false;
+  return value.split("/").every((segment) => segment !== "." && segment !== "..");
+}
+
 class Problems {
   readonly list: string[] = [];
 
@@ -105,12 +114,25 @@ class Problems {
     if (value.length > 0) this.each(value, path, check);
   }
 
-  // Requires every entry of a string list to be non-blank.
+  // Requires a list of non-blank strings. The list may be empty, but it
+  // must exist: components read .length and .map on it.
   strings(value: unknown, path: string): void {
-    if (!Array.isArray(value)) return;
+    if (!Array.isArray(value)) {
+      this.add(`${path} must be a list`);
+      return;
+    }
     value.forEach((item, index) => {
       if (isBlank(item)) this.add(`${path}[${index}] is missing or empty`);
     });
+  }
+
+  // Like each, but an empty list is fine. The list itself is required.
+  requiredList(value: unknown, path: string, check: (item: Unknown, itemPath: string, index: number) => void): void {
+    if (!Array.isArray(value)) {
+      this.add(`${path} must be a list`);
+      return;
+    }
+    if (value.length > 0) this.each(value, path, check);
   }
 
   uniqueIds(items: Unknown[], path: string): void {
@@ -221,7 +243,7 @@ function checkHowIWork(problems: Problems, howIWork: unknown): void {
     problems.text(howIWork.source, "howIWork.source", ["label", "href"]);
     problems.https(howIWork.source, "howIWork.source", "href");
   }
-  problems.eachOptional(howIWork.repositories, "howIWork.repositories", (repo, path) => {
+  problems.requiredList(howIWork.repositories, "howIWork.repositories", (repo, path) => {
     problems.text(repo, path, ["name", "href", "description"]);
     problems.https(repo, path, "href");
   });
@@ -297,7 +319,7 @@ function checkContact(problems: Problems, contact: unknown): void {
     if (!isBlank(contact[field])) problems.https(contact, "contact", field);
   }
   const resume = contact.resume;
-  if (typeof resume === "string" && !isBlank(resume) && !/^\/[^/].*\.pdf$/.test(resume)) {
+  if (typeof resume === "string" && !isBlank(resume) && !isPublicPdfPath(resume)) {
     problems.add("contact.resume must be a root-relative path to a .pdf");
   }
 }

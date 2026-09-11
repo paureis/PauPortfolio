@@ -1,8 +1,9 @@
 import type { Contact, Profile, Station } from "@/content/types";
 
-// The first viewport. Name, positioning line with its tail, supporting
-// line, and the two actions. Real HTML from the content model, so it is on
-// screen before anything else loads.
+// The first viewport, station 1. Name and location, positioning line with
+// its tail, supporting line, and the two actions. Real HTML from the
+// content model, so it is on screen before anything else loads. A section
+// like the other five stations, labelled by its heading.
 export function Hero({
   profile,
   contact,
@@ -15,9 +16,11 @@ export function Hero({
   workAnchor: string;
 }) {
   return (
-    <header className="hero" id={station.anchor}>
-      <p className="hero-name">{profile.name}</p>
-      <h1 className="hero-positioning">
+    <section className="hero" id={station.anchor} aria-labelledby={`${station.anchor}-heading`}>
+      <p className="hero-name">
+        {profile.name} <span className="hero-location">{profile.location}</span>
+      </p>
+      <h1 id={`${station.anchor}-heading`} className="hero-positioning">
         {profile.positioning}, {profile.tail}.
       </h1>
       <p className="hero-supporting">{profile.supporting}</p>
@@ -29,6 +32,6 @@ export function Hero({
           Download resume
         </a>
       </p>
-    </header>
+    </section>
   );
 }

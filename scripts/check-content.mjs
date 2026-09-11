@@ -6,25 +6,36 @@
 //
 // Two checks live here rather than in content/validate.ts because they
 // touch the file system: the resume PDF the contact section links to must
-// exist under public/, and it must be a PDF.
+// exist under public/, and it must be a PDF. The path is resolved and
+// checked against the public directory before it is read, so a value that
+// slipped past validation still cannot make the gate read a file the site
+// would not serve.
 
 import { access, readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import { resolve, sep } from "node:path";
 import { site } from "../content/site.ts";
-import { validateSite } from "../content/validate.ts";
+import { isPublicPdfPath, validateSite } from "../content/validate.ts";
 
 const problems = validateSite(site);
 
+const publicDir = resolve(fileURLToPath(new URL("../public", import.meta.url)));
 const resume = site?.contact?.resume;
-if (typeof resume === "string" && resume.startsWith("/")) {
-  const resumePath = new URL(`../public${resume}`, import.meta.url);
-  try {
-    await access(resumePath);
-    const head = (await readFile(resumePath)).subarray(0, 5).toString("latin1");
-    if (head !== "%PDF-") {
-      problems.push(`contact.resume (public${resume}) is not a PDF`);
+
+if (typeof resume === "string" && isPublicPdfPath(resume)) {
+  const resumePath = resolve(publicDir, `.${resume}`);
+  if (!resumePath.startsWith(publicDir + sep)) {
+    problems.push(`contact.resume (${resume}) resolves outside public/`);
+  } else {
+    try {
+      await access(resumePath);
+      const head = (await readFile(resumePath)).subarray(0, 5).toString("latin1");
+      if (head !== "%PDF-") {
+        problems.push(`contact.resume (public${resume}) is not a PDF`);
+      }
+    } catch {
+      problems.push(`contact.resume points at public${resume}, which does not exist`);
     }
-  } catch {
-    problems.push(`contact.resume points at public${resume}, which does not exist`);
   }
 }
 

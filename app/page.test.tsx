@@ -25,7 +25,13 @@ function expectedOrder(): string[] {
   const [wide, work, howIWork, wall, deskEnd, window_] = site.stations;
   const items: string[] = [];
 
-  items.push(site.profile.name, site.profile.positioning, site.profile.tail, site.profile.supporting);
+  items.push(
+    site.profile.name,
+    site.profile.location,
+    site.profile.positioning,
+    site.profile.tail,
+    site.profile.supporting,
+  );
 
   items.push(work.title);
   for (const entry of site.work) {
@@ -44,13 +50,22 @@ function expectedOrder(): string[] {
     items.push(credential.name, credential.issuer);
     if (credential.status === "earned" && credential.earnedOn) {
       items.push(formatDate(credential.earnedOn));
+      if (credential.expiresOn) items.push(formatDate(credential.expiresOn));
+    } else {
+      items.push("In progress");
     }
+    if (credential.verificationCode) items.push(credential.verificationCode);
   }
-  for (const entry of site.education) items.push(entry.degree, entry.school, entry.when);
+  for (const entry of site.education) {
+    items.push(entry.degree, entry.school, entry.when);
+    if (entry.detail) items.push(entry.detail);
+  }
 
   items.push(deskEnd.title, site.offTheClock.intro);
   for (const item of site.offTheClock.items) items.push(item.title, item.detail);
-  for (const language of site.offTheClock.languages) items.push(language.name);
+  for (const language of site.offTheClock.languages) {
+    items.push(language.name, language.level.toLowerCase());
+  }
 
   items.push(window_.title, site.contact.intro, site.contact.email, site.contact.closing);
   return items;
@@ -66,13 +81,18 @@ describe("the document page", () => {
     }
   });
 
-  it("carries the six stations as sections with headings, in order", () => {
-    const anchors = site.stations.slice(1).map((s) => s.anchor);
-    const positions = anchors.map((anchor) => html.indexOf(`id="${anchor}"`));
+  it("carries the six stations as labelled sections with headings, in order", () => {
+    const anchors = site.stations.map((s) => s.anchor);
+    const positions = anchors.map((anchor) =>
+      html.indexOf(`id="${anchor}" aria-labelledby="${anchor}-heading"`),
+    );
     expect(positions.every((p) => p >= 0)).toBe(true);
     expect([...positions].sort((a, b) => a - b)).toEqual(positions);
-    expect(html.match(/<h2 /g)?.length).toBe(anchors.length);
+    for (const anchor of anchors) expect(html).toContain(`id="${anchor}-heading"`);
+    expect(html.match(/<section /g)?.length).toBe(anchors.length);
     expect(html.match(/<h1 /g)?.length).toBe(1);
+    expect(html.match(/<h2 /g)?.length).toBe(anchors.length - 1);
+    expect(html).not.toContain("<header");
   });
 
   it("links the resume, the email, LinkedIn, GitHub, and every verification page", () => {
