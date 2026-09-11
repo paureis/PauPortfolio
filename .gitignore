@@ -1,4 +1,4 @@
-reference/
+/reference/
 node_modules/
 .next/
 out/
@@ -9,3 +9,6 @@ out/
 next-env.d.ts
 *.tsbuildinfo
 .vercel
+
+# Impeccable local cache
+.impeccable/hook.cache.json
