@@ -142,6 +142,7 @@ export const site: SiteContent = {
       "Cross-model review. Claude, Codex, and Cursor each review the others' work, which removes the author's blind spots before merge.",
       "This site is built that way. Claude Code builds the web app, Codex builds the 3D scene and the data pipeline, and each reviews the other's pull requests cold. The repository is public so you can check.",
     ],
+    source: { label: "paureis/PauPortfolio on GitHub", href: "https://github.com/paureis/PauPortfolio" },
     // Pau chooses these. Empty until then; the section renders without them.
     repositories: [],
   },

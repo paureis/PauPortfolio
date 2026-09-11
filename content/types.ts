@@ -61,6 +61,8 @@ export interface HowIWork {
   intro: string;
   lifecycle: LifecyclePhase[];
   practice: string[];
+  // This site's own repository, the proof behind the practice notes.
+  source: Link;
   // Hand-picked, never fetched. Empty until Pau chooses them.
   repositories: Repository[];
 }

@@ -215,6 +215,12 @@ function checkHowIWork(problems: Problems, howIWork: unknown): void {
     problems.text(phase, path, ["name", "description"]);
   });
   problems.strings(howIWork.practice, "howIWork.practice");
+  if (!isObject(howIWork.source)) {
+    problems.add("howIWork.source is missing");
+  } else {
+    problems.text(howIWork.source, "howIWork.source", ["label", "href"]);
+    problems.https(howIWork.source, "howIWork.source", "href");
+  }
   problems.eachOptional(howIWork.repositories, "howIWork.repositories", (repo, path) => {
     problems.text(repo, path, ["name", "href", "description"]);
     problems.https(repo, path, "href");

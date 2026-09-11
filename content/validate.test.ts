@@ -53,6 +53,7 @@ function validSite(): SiteContent {
         { name: "Implement", description: "Build it." },
       ],
       practice: ["Twenty-plus reusable skills."],
+      source: { label: "paureis/PauPortfolio", href: "https://github.com/paureis/PauPortfolio" },
       repositories: [{ name: "PauPortfolio", href: "https://github.com/paureis/PauPortfolio", description: "This site." }],
     },
     credentials: [
@@ -286,6 +287,10 @@ describe("validateSite", () => {
         "howIWork.repositories[0].href must be an https URL",
       ]);
       expect(validateSite(broken((s) => (s.howIWork.repositories = [])))).toEqual([]);
+      expect(validateSite(broken((s) => delete s.howIWork.source))).toEqual(["howIWork.source is missing"]);
+      expect(validateSite(broken((s) => (s.howIWork.source.href = "github.com/paureis")))).toEqual([
+        "howIWork.source.href must be an https URL",
+      ]);
     });
 
     it("requires all six stations in story order with unique anchors", () => {
