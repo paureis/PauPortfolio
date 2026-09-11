@@ -111,12 +111,13 @@ li::marker {
 }
 
 /* The scene's place. Fixed behind the document, empty until the scene
-   lands. A faint lift toward the top left is the lamp's side of the desk. */
+   lands. It is the room's ground and nothing else: light comes from the
+   scene, never from CSS. */
 .scene-slot {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: radial-gradient(ellipse 70% 55% at 18% 10%, var(--room-lift), var(--room-base) 100%);
+  background: var(--room-base);
 }
 
 .document {
@@ -144,7 +145,7 @@ li::marker {
 
 .hero-name {
   color: var(--lamp-amber);
-  font-size: var(--text-lead);
+  font-size: 1.125rem;
   font-weight: 600;
 }
 
@@ -271,26 +272,54 @@ li::marker {
    so they keep their numbers. */
 .timeline,
 .lifecycle {
-  padding-left: 1.75rem;
+  list-style: none;
+  padding-left: 0;
   margin-top: var(--space-1);
+  counter-reset: step;
 }
 
+/* A grid item cannot carry a list marker, so the number is drawn by a
+   counter in the first column and spans the item's rows. */
 .timeline li,
 .lifecycle li {
   display: grid;
-  gap: 0.125rem 0.75rem;
-  padding-left: 0.25rem;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.125rem 0.5rem;
+  counter-increment: step;
+}
+
+.timeline li::before,
+.lifecycle li::before {
+  content: counter(step);
+  grid-area: n;
+  color: var(--text-cream);
+  font-weight: 600;
+}
+
+.timeline li {
+  grid-template-areas:
+    "n org"
+    "n role"
+    "n when";
+}
+
+.lifecycle li {
+  grid-template-areas:
+    "n name"
+    "n description";
+}
+
+.lifecycle-name {
+  grid-area: name;
+}
+
+.lifecycle-description {
+  grid-area: description;
 }
 
 .timeline li + li,
 .lifecycle li + li {
   margin-top: var(--space-1);
-}
-
-.timeline li::marker,
-.lifecycle li::marker {
-  color: var(--text-cream);
-  font-weight: 600;
 }
 
 .timeline-org,
@@ -313,10 +342,10 @@ li::marker {
 
 @media (min-width: 48rem) {
   .timeline li {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 2rem 1fr auto;
     grid-template-areas:
-      "org when"
-      "role when";
+      "n org when"
+      "n role when";
     align-items: baseline;
   }
 
@@ -467,6 +496,7 @@ li::marker {
   .off-the-clock {
     grid-template-columns: 1fr 1fr;
     gap: var(--space-2);
+    align-items: start;
   }
 }
 

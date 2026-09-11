@@ -8,7 +8,7 @@ export function HowIWork({ station, content }: { station: StationContent; conten
   return (
     <Station station={station}>
       <p className="lead">{content.intro}</p>
-      <ol className="lifecycle">
+      <ol className="lifecycle" role="list">
         {content.lifecycle.map((phase) => (
           <li key={phase.name}>
             <span className="lifecycle-name">{phase.name}</span>

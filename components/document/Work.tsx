@@ -44,7 +44,7 @@ function Timeline({ entries }: { entries: TimelineEntry[] }) {
   return (
     <>
       <h3 className="entry-title">Where I have worked</h3>
-      <ol className="timeline">
+      <ol className="timeline" role="list">
         {entries.map((entry) => (
           <li key={`${entry.organization}-${entry.start}`}>
             <span className="timeline-org">{entry.organization}</span>
