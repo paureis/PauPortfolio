@@ -13,8 +13,8 @@
   --lamp-amber: #e8a54b;
   --lamp-amber-bright: #f2c581;
 
-  --font-display: var(--font-display, "Bricolage Grotesque"), "Segoe UI", system-ui, sans-serif;
-  --font-body: var(--font-body, "Inter"), "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-display-loaded, "Bricolage Grotesque"), "Segoe UI", system-ui, sans-serif;
+  --font-body: var(--font-body-loaded, "Inter"), "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
 
   --text-body: 1rem;
   --text-lead: 1.125rem;
@@ -393,9 +393,20 @@ li::marker {
   color: var(--text-dim);
 }
 
+.credential-verify {
+  display: grid;
+  gap: 0.125rem;
+  justify-items: start;
+}
+
+.credential-code {
+  color: var(--text-dim);
+  overflow-wrap: anywhere;
+}
+
 @media (min-width: 48rem) {
   .credential {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr 12rem;
     grid-template-areas:
       "name verify"
       "issuer verify"
@@ -418,15 +429,6 @@ li::marker {
   .credential-verify {
     grid-area: verify;
     align-self: start;
-    text-align: right;
-  }
-
-  .credentials-rest .credential {
-    grid-template-columns: 1fr auto auto;
-    grid-template-areas:
-      "name status verify"
-      "issuer status verify";
-    align-items: baseline;
   }
 }
 

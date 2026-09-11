@@ -25,7 +25,9 @@ function Item({ credential }: { credential: Credential }) {
           <a href={credential.verificationUrl} rel="noopener">
             Verify
           </a>
-          {credential.verificationCode ? ` with code ${credential.verificationCode}` : null}
+          {credential.verificationCode ? (
+            <span className="credential-code">Code {credential.verificationCode}</span>
+          ) : null}
         </span>
       ) : null}
     </li>
