@@ -168,7 +168,7 @@ export const site: SiteContent = {
       earnedOn: "2026-03-20",
       expiresOn: "2027-03-20",
       verificationUrl:
-        "https://learn.microsoft.com/en-us/users/alvaroreis-9077/credentials/certification/azure-ai-engineer",
+        "https://learn.microsoft.com/api/credentials/share/en-us/AlvaroReis-9077/FCEDBB354CE6AC23?sharingId=7DD4E4227AF5D55B",
     },
     {
       id: "claude-certified-architect-professional",
@@ -249,7 +249,7 @@ export const site: SiteContent = {
       status: "earned",
       earnedOn: "2025-02-21",
       verificationUrl:
-        "https://learn.microsoft.com/en-us/users/alvaroreis-9077/credentials/certification/azure-fundamentals",
+        "https://learn.microsoft.com/api/credentials/share/en-us/AlvaroReis-9077/15101730EC6F3713?sharingId=7DD4E4227AF5D55B",
     },
     {
       id: "azure-data-fundamentals",
@@ -259,7 +259,7 @@ export const site: SiteContent = {
       status: "earned",
       earnedOn: "2024-08-16",
       verificationUrl:
-        "https://learn.microsoft.com/en-us/users/alvaroreis-9077/credentials/certification/azure-data-fundamentals",
+        "https://learn.microsoft.com/api/credentials/share/en-us/AlvaroReis-9077/502FF82D2CC3BB93?sharingId=7DD4E4227AF5D55B",
     },
     {
       id: "azure-ai-fundamentals",
@@ -269,7 +269,7 @@ export const site: SiteContent = {
       status: "earned",
       earnedOn: "2024-02-05",
       verificationUrl:
-        "https://learn.microsoft.com/en-us/users/alvaroreis-9077/credentials/certification/azure-ai-fundamentals",
+        "https://learn.microsoft.com/api/credentials/share/en-us/AlvaroReis-9077/2E359753554AC088?sharingId=7DD4E4227AF5D55B",
     },
   ],
 
