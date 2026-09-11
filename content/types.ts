@@ -25,7 +25,8 @@ export interface WorkEntry {
   organization?: string;
   role: string;
   // Year-month, so the reader sees a span without a day that means nothing.
-  start: string;
+  // Optional: a product or a studio has no start date worth printing.
+  start?: string;
   end?: string;
   summary: string;
   // What changed for the people who used it. At least one, always first.
@@ -64,7 +65,10 @@ export interface HowIWork {
   repositories: Repository[];
 }
 
-export type CredentialTier = "headline" | "fundamentals";
+// headline: the ones a cloud or AI recruiter screens for. supporting: the
+// rest of the earned professional and associate set. fundamentals: the
+// entry-level exams.
+export type CredentialTier = "headline" | "supporting" | "fundamentals";
 export type CredentialStatus = "earned" | "in-progress";
 
 export interface Credential {
@@ -78,6 +82,8 @@ export interface Credential {
   expiresOn?: string;
   // Required when earned. Where a recruiter confirms it in one click.
   verificationUrl?: string;
+  // Some issuers verify through a shared page plus a code typed into it.
+  verificationCode?: string;
 }
 
 export interface Education {
@@ -85,6 +91,7 @@ export interface Education {
   degree: string;
   // Free text the reader sees: "2025" or "Starting spring 2027".
   when: string;
+  detail?: string;
 }
 
 export interface OffTheClockItem {

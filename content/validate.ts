@@ -24,7 +24,7 @@ const STATION_ORDER: readonly StationId[] = [
   "desk-end",
   "window",
 ];
-const TIERS: readonly CredentialTier[] = ["headline", "fundamentals"];
+const TIERS: readonly CredentialTier[] = ["headline", "supporting", "fundamentals"];
 const STATUSES: readonly CredentialStatus[] = ["earned", "in-progress"];
 
 // Ten digits in the common North American groupings, with or without an
@@ -168,8 +168,8 @@ function checkWork(problems: Problems, work: unknown): void {
   problems.each(work, "work", (entry, path) => {
     entries.push(entry);
     const name = typeof entry.title === "string" ? entry.title : path;
-    problems.text(entry, path, ["id", "title", "role", "start", "summary"]);
-    if (typeof entry.start === "string" && !YEAR_MONTH.test(entry.start)) {
+    problems.text(entry, path, ["id", "title", "role", "summary"]);
+    if (entry.start !== undefined && (typeof entry.start !== "string" || !YEAR_MONTH.test(entry.start))) {
       problems.add(`${path}.start must be YYYY-MM`);
     }
     if (entry.end !== undefined && (typeof entry.end !== "string" || !YEAR_MONTH.test(entry.end))) {
@@ -228,7 +228,7 @@ function checkCredentials(problems: Problems, credentials: unknown): void {
     const name = typeof credential.name === "string" ? credential.name : path;
     problems.text(credential, path, ["id", "name", "issuer"]);
     if (!TIERS.includes(credential.tier as CredentialTier)) {
-      problems.add(`${path}.tier must be ${TIERS.join(" or ")}`);
+      problems.add(`${path}.tier must be headline, supporting, or fundamentals`);
     }
     if (!STATUSES.includes(credential.status as CredentialStatus)) {
       problems.add(`${path}.status must be ${STATUSES.join(" or ")}`);

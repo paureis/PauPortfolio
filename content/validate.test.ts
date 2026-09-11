@@ -173,10 +173,11 @@ describe("validateSite", () => {
       ]);
     });
 
-    it("rejects a start date that is not year-month", () => {
+    it("rejects a start date that is not year-month, but allows no date at all", () => {
       expect(validateSite(broken((s) => (s.work[0].start = "January 2025")))).toEqual([
         "work[0].start must be YYYY-MM",
       ]);
+      expect(validateSite(broken((s) => delete s.work[0].start))).toEqual([]);
     });
 
     it("rejects an unknown visibility and links on a resume-level entry", () => {
@@ -237,7 +238,7 @@ describe("validateSite", () => {
         "credentials[1].status must be earned or in-progress",
       ]);
       expect(validateSite(broken((s) => (s.credentials[0].tier = "gold")))).toEqual([
-        "credentials[0].tier must be headline or fundamentals",
+        "credentials[0].tier must be headline, supporting, or fundamentals",
       ]);
     });
 

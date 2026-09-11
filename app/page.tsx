@@ -1,4 +1,4 @@
-import { profile } from "@/content/profile";
+import { profile } from "@/content/site";
 
 // Placeholder hero. It is the first thing every visitor sees, before any
 // scene loads, so it is real HTML from the content source. Issue 2 replaces
