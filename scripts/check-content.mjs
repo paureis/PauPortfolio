@@ -1,26 +1,22 @@
-// Content validation. Fails the build when the content source is missing
-// something a visitor would notice. Issue 2 extends this with the full rule
-// set from the PRD (earned credential without a date, work entry without
-// outcomes, missing verification link, missing contact field).
-//
-// Runs as plain Node so CI doesn't need a TypeScript runner for it; the
-// content file is read as text and the required fields are checked by name.
+// Content validation gate. Imports the real content module and validates the
+// exported values, so a missing, empty, or whitespace-only field fails the
+// build no matter how the source file is formatted. Runs under Node's type
+// stripping (see the check:content script in package.json), which is why
+// the imports carry .ts extensions.
 
-import { readFile } from "node:fs/promises";
+import { profile } from "../content/profile.ts";
+import { REQUIRED_PROFILE_FIELDS, validateProfile } from "../content/validate.ts";
 
-const source = await readFile(new URL("../content/profile.ts", import.meta.url), "utf8");
+const problems = validateProfile(profile);
 
-const required = ["name", "shortName", "location", "positioning", "supporting"];
-const missing = required.filter((field) => !new RegExp(`^\\s*${field}:\\s*\\S`, "m").test(source));
-
-if (missing.length > 0) {
-  console.error(`check:content failed. Missing or empty fields in content/profile.ts: ${missing.join(", ")}`);
+if (problems.length > 0) {
+  console.error("check:content failed:");
+  for (const problem of problems) {
+    console.error(`  - ${problem}`);
+  }
   process.exit(1);
 }
 
-if (/\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b/.test(source)) {
-  console.error("check:content failed. Something in content/profile.ts looks like a phone number, which the site must never carry.");
-  process.exit(1);
-}
-
-console.log(`check:content ok (${required.length} required fields present, no phone number).`);
+console.log(
+  `check:content ok (${REQUIRED_PROFILE_FIELDS.length} required fields present, no phone number).`,
+);

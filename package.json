@@ -6,14 +6,13 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "npx serve out",
-    "lint": "next lint",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check:content": "node scripts/check-content.mjs",
+    "check:content": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-content.mjs",
     "check:manifest": "node scripts/check-manifest.mjs",
-    "check": "npm run typecheck && npm run check:content && npm run check:manifest && npm test"
+    "check": "npm run typecheck && npm run lint && npm run check:content && npm run check:manifest && npm test"
   },
   "engines": {
     "node": ">=22"
@@ -27,6 +26,8 @@
     "@types/node": "22.20.2",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.4",
     "typescript": "5.9.3",
     "vitest": "5.0.0"
   }
