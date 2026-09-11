@@ -12,3 +12,7 @@ next-env.d.ts
 
 # Impeccable local cache
 .impeccable/hook.cache.json
+
+# Impeccable review captures and Playwright output
+.impeccable/review/
+.playwright-mcp/

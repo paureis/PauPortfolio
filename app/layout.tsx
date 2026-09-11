@@ -11,14 +11,14 @@ import "./globals.css";
 const display = Bricolage_Grotesque({
   subsets: ["latin"],
   weight: ["600"],
-  variable: "--font-display",
+  variable: "--font-display-loaded",
   display: "swap",
 });
 
 const body = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
-  variable: "--font-body",
+  variable: "--font-body-loaded",
   display: "swap",
 });
 
