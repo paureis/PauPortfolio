@@ -67,7 +67,9 @@ actual addressable mesh remains in the source. Screens and the window are blank.
 - `window_clear_sill_option.png`: unsaved alternative anchor at glTF
   `(-0.57, 1.45, 0.05)`, looking level toward the rear wall, vertical FOV 134.
   This tests clearing the monitors while retaining vertical window edges;
-  nearby sill objects have exaggerated perspective. It is not the saved
+  nearby sill objects have exaggerated perspective and a monitor edge remains
+  at lower right, so this alternative also fails the clear-sill requirement.
+  It is not the saved
   `cam_window` and requires Pau's decision to relax the requested lens/height.
 
 All seven images were rendered and visually inspected in the video revision;
