@@ -31,8 +31,9 @@ Monitor faces are 0.534 by 0.300 m (main) and 0.598 by 0.336 m (side).
 Other dimensions remain visual estimates from the photos and room video.
 
 The video revision brings the monitors closer together, raises the mic arm
-from the front-left clamp, adds hanging IEMs, turns the PC's two-fan end to
-the right, and places the bottle left of the controller. Sill objects remain
+from the front-left clamp, and adds hanging IEMs. Pau's follow-up review squares
+the PC to the back wall, with its glass side chairward, the bottle between the
+case and right wall, and the controller in front of the case. Sill objects remain
 generic shapes. The couch is a coarse mass on the left. The video and its
 extracted reference frames remain ignored modeling inputs.
 
@@ -40,29 +41,42 @@ All six named anchors exist with `fov` and `path` custom properties. All nine
 named addressable surfaces exist. Material slots are deferred until after
 framing review. The two screen faces are planar quads with 0-to-1 UVs.
 
-`review/` contains six current anchor renders plus an orthographic top-down
-layout view, all 1440 by 900. Shades of gray are
+`review/` contains six anchor renders plus an orthographic top-down layout view,
+all 1440 by 900. The latest review refreshes wide, side monitor, window, desk end,
+and top-down. Main monitor and wall retain the preceding review images and their
+approved camera transforms. Shades of gray are
 viewport object colors used for distinguishing geometry, not final materials.
 Workbench cast shadows are disabled so they do not obscure the block-out.
 Case glass is temporarily hidden during rendering to expose its interior; the
 actual addressable mesh remains in the source. Screens and the window are blank.
 
-- `wide.png`: whole five-leg desk, both monitors, mic/IEMs, case, and window;
-  couch is a coarse mass at the left edge.
+- `wide.png`: desk biased right, with the window and back wall at the left;
+  the couch is cropped to the lower-left corner.
 - `main_monitor.png`: square-on main display, about 70% of frame height, webcam above.
-- `side_monitor.png`: elevated view over the mic. The arm still crosses the
-  lower-left margin; this angle and its perspective remain a framing decision.
+- `side_monitor.png`: camera at screen-center height and perpendicular to the
+  screen, which fills 70% of image height. Camera sits 0.20 m from the face,
+  between screen and arm, with a 100.39-degree vertical FOV to preserve coverage.
+  The mic is outside the frame. The arriving camera path will need to clear it.
 - `wall.png`: six empty frames in two rows with the dartboard beside them.
 - `desk_end.png`: case, bottle, controller, mouse/pad, and keyboard. The monitors
   obscure the sill figures from this low angle; they are visible in other views.
-- `window.png`: elevated window view to see the sill over the monitors; camera
-  pitch and the amount of monitor foreground remain review decisions.
+- `window.png`: requested 35-degree trial, camera 1.32 m high, about 6 degrees
+  upward pitch. Vertical convergence is mild, but the monitors obscure the sill.
+  This does not yet meet the requested clear-sill/no-monitor composition.
 - `top_down.png`: desk footprints, monitor angles, PC orientation, and mic clamp.
+- `window_clear_sill_option.png`: unsaved alternative anchor at glTF
+  `(-0.57, 1.45, 0.05)`, looking level toward the rear wall, vertical FOV 134.
+  This tests clearing the monitors while retaining vertical window edges;
+  nearby sill objects have exaggerated perspective. It is not the saved
+  `cam_window` and requires Pau's decision to relax the requested lens/height.
 
-All seven images were rendered and visually inspected after this revision.
+All seven images were rendered and visually inspected in the video revision;
+the four requested follow-up views were rendered and inspected again.
 Live Blender assertions checked the required names, measured tabletop dimensions,
 five legs, and both planar screen quads with UV layers. These checks are not the
 export manifest validator, which remains part of the post-approval work.
+Follow-up assertions also verify the case is square to the world axes and the
+side anchor is level, perpendicular, and gives exactly 70% screen height.
 
 ## Working in Blender
 
