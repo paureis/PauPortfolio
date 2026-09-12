@@ -71,6 +71,8 @@ def normalize_anchors(path, anchors, blend_hash):
 
 
 def export():
+    if bpy.data.is_dirty:
+        raise RuntimeError('Save and commit live Blender edits before exporting')
     source_bytes = SOURCE.read_bytes()
     if source_bytes != git('show', 'HEAD:scene/desk.blend'):
         raise RuntimeError('Commit scene/desk.blend before exporting it')
@@ -105,13 +107,17 @@ def export():
                     width=round((corners[1]-corners[0]).length, 8),
                     height=round((corners[3]-corners[0]).length, 8))
         # Curve cables become real mesh geometry in the build artifact only.
-        bpy.ops.object.select_all(action='DESELECT')
         curves = [o for o in bpy.context.scene.objects if o.type == 'CURVE']
+        depsgraph = bpy.context.evaluated_depsgraph_get()
         for obj in curves:
-            obj.select_set(True)
-        if curves:
-            bpy.context.view_layer.objects.active = curves[0]
-            bpy.ops.object.convert(target='MESH')
+            mesh = bpy.data.meshes.new_from_object(obj.evaluated_get(depsgraph),
+                                                   depsgraph=depsgraph)
+            name, matrix = obj.name, obj.matrix_world.copy()
+            replacement = bpy.data.objects.new(name + '_export', mesh)
+            bpy.context.scene.collection.objects.link(replacement)
+            replacement.matrix_world = matrix
+            bpy.data.objects.remove(obj, do_unlink=True)
+            replacement.name = name
         for filename, minimal in [('desk.glb', False), ('desk-lite.glb', True)]:
             bpy.ops.object.select_all(action='DESELECT')
             for obj in bpy.context.scene.objects:
@@ -120,12 +126,16 @@ def export():
                     include = False
                 obj.select_set(include)
             path = OUTPUT / filename
-            bpy.ops.export_scene.gltf(filepath=str(path), export_format='GLB',
-                use_selection=True, export_yup=True, export_apply=True,
-                export_extras=True, export_cameras=False, export_lights=False,
-                export_materials='EXPORT', export_draco_mesh_compression_enable=True,
-                export_draco_mesh_compression_level=6,
-                export_draco_position_quantization=16)
+            window = bpy.context.window_manager.windows[0]
+            area = next(a for a in window.screen.areas if a.type == 'VIEW_3D')
+            region = next(r for r in area.regions if r.type == 'WINDOW')
+            with bpy.context.temp_override(window=window, area=area, region=region):
+                bpy.ops.export_scene.gltf(filepath=str(path), export_format='GLB',
+                    use_selection=True, export_yup=True, export_apply=True,
+                    export_extras=True, export_cameras=False, export_lights=False,
+                    export_materials='EXPORT', export_draco_mesh_compression_enable=True,
+                    export_draco_mesh_compression_level=6,
+                    export_draco_position_quantization=16)
             normalize_anchors(path, anchors, source_hash)
             assert path.stat().st_size < 4194304
         # These slots deliberately contain no textures in the block-out milestone.
