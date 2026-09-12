@@ -37,7 +37,8 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Typecheck, lint, content check, manifest check, tests
+      # Includes the required manifest/artifact gate and its negative fixtures.
+      - name: Typecheck, lint, content, scene manifest and regression tests
         run: npm run check
 
       - name: Build static export

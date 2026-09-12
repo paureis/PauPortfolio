@@ -12,7 +12,8 @@
     "test:watch": "vitest",
     "check:content": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-content.mjs",
     "check:manifest": "node scripts/check-manifest.mjs",
-    "check": "npm run typecheck && npm run lint && npm run check:content && npm run check:manifest && npm test"
+    "test:manifest": "node --test scripts/scene-manifest.test.mjs",
+    "check": "npm run typecheck && npm run lint && npm run check:content && npm run check:manifest && npm run test:manifest && npm test"
   },
   "engines": {
     "node": ">=22"
