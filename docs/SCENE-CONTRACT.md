@@ -6,18 +6,19 @@ The interface between the 3D lane (Blender, Codex) and the web lane (React Three
 
 - Meters. 1 Blender unit = 1 meter. The desk top is about 0.74 m above the floor.
 - Blender's default orientation (Z up) is converted on export to glTF's Y up. Anchor transforms in the manifest are in glTF space, so the web lane never converts.
-- World origin is at floor level, directly below the center of the main monitor's stand. The chair is at negative Z (toward the viewer); the back wall is at positive Z; the right wall (with the dartboard and the PC) is at positive X.
+- World origin is at floor level, directly below the center of the main monitor's stand. In glTF space, the chair is at positive Z (toward the viewer); the back wall is at negative Z; the right wall and the PC are at positive X. With Y up, this keeps the room's left and right correct from the chair.
+- In Blender, +X is right, +Y points toward the back wall, and +Z is up. Export converts Blender `(x, y, z)` to glTF `(x, z, -y)`. The web lane consumes the exported transforms without an additional axis flip.
 
 ## Camera anchors
 
-Each is an empty in the Blender file. Its location is the camera position; its rotation is the camera orientation (looking down its local negative Z). Each anchor also carries a custom property `fov` in degrees.
+Each is an empty in the Blender file. Its location is the camera position; its rotation is the camera orientation (looking down its local negative Z). Each anchor also carries a custom property `fov` in vertical degrees.
 
 | Name | Station | Framing intent |
 |---|---|---|
 | `cam_wide` | 1, hero | Whole desk from just above the chair's eye line, both monitors, keyboard, the case on the right, window visible behind the side monitor. Content sits left of center on desktop, so bias the desk to the right third. |
 | `cam_main_monitor` | 2, work | The Zowie fills roughly 70% of the viewport height, square-on, webcam visible at the top edge. |
 | `cam_side_monitor` | 3, how I work | The 27" fills roughly 70% of viewport height, square-on to its angled face, with a sliver of window at its left edge. |
-| `cam_wall` | 4, credentials | The right wall above the case: dartboard and the framed credentials area, camera slightly below eye level looking up. |
+| `cam_wall` | 4, credentials | The corner above the case: dartboard on the rear-wall section immediately right of the window, with the framed credentials on the adjoining right wall; camera slightly below eye level looking up. |
 | `cam_desk_end` | 5, off the clock | Low, close to desk level, looking along the desk toward the case: controller, mouse on the pad, bottle, case glass, sill figures in the background. |
 | `cam_window` | 6, contact | The window fills the frame, shade up, dusk outside; the sill and its figures along the bottom edge. |
 
