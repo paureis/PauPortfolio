@@ -2,7 +2,8 @@
 
 desk.blend is the editable source of truth. This script records the initial
 proportion estimates; do not rerun it over a reviewed or hand-edited scene.
-Coordinates below use the contract's glTF convention: (right, up, back), meters.
+The layout recipe below uses (right, up, back), meters. This is a construction
+convention, not a glTF frame: glTF positive Z points toward the chair.
 """
 
 import math
@@ -16,9 +17,9 @@ ROOT = Path(__file__).resolve().parent
 
 
 def xyz(point):
-    """glTF Y-up to Blender Z-up; the exporter performs the inverse."""
+    """Recipe (right, up, back) to Blender (+X right, +Y back, +Z up)."""
     x, y, z = point
-    return Vector((x, -z, y))
+    return Vector((x, z, y))
 
 
 def finish(obj, name, tone=0.45):
@@ -32,7 +33,7 @@ def box(name, center, size, tone=0.45, yaw=0):
     obj = finish(bpy.context.object, name, tone)
     obj.dimensions = (size[0], size[2], size[1])
     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-    obj.rotation_euler.z = math.radians(yaw)
+    obj.rotation_euler.z = -math.radians(yaw)
     return obj
 
 
@@ -70,7 +71,7 @@ def quad(name, center, width, height, tone=0.62, yaw=0):
     obj = bpy.data.objects.new(name, mesh)
     bpy.context.collection.objects.link(obj)
     obj.location = xyz(center)
-    obj.rotation_euler.z = math.radians(yaw)
+    obj.rotation_euler.z = -math.radians(yaw)
     return finish(obj, name, tone)
 
 
@@ -122,6 +123,7 @@ scene.name = 'Desk block-out'
 scene.unit_settings.system = 'METRIC'
 scene.unit_settings.scale_length = 1
 scene['stage'] = 'Block-out awaiting Pau framing approval; no materials or bakes'
+scene['coordinate_convention'] = 'gltf_x_right_y_up_z_toward_chair'
 scene['dimensions_note'] = 'Desk 2.10 x 0.64 m estimated from photos; top 0.74 m; monitors 24.1 and 27 inches.'
 
 # Room shell with an actual window opening; the shade is raised.
@@ -190,15 +192,16 @@ for i, x in enumerate([.608, .712]):
 for i, x in enumerate([.637, .683]):
     rod('controller_stick_' + str(i), (x, .778, -.146), (x, .791, -.146), .009, .23)
 
-# Boom arm between the displays, in front of and below the screen faces.
-box('mic_clamp', (-.41, .75, .19), (.045, .08, .06), .32)
-arm_points = [(-.41, .78, .19), (-.49, 1.04, .09), (-.35, .97, -.19)]
+# Front-left clamp with the arm reaching inward below the screen faces.
+box('mic_clamp', (-1.08, .735, -.389), (.047, .070, .053), .32)
+rod('boom_mount', (-1.08, .752, -.377), (-1.08, .802, -.377), .016, .32)
+arm_points = [(-1.08, .790, -.377), (-1.08, .975, -.377), (-.34, .865, -.170)]
 for i in range(2):
     a, b = Vector(arm_points[i]), Vector(arm_points[i+1])
-    for j, offset in enumerate([-.011, .011]):
-        rod('boom_%s_%s' % (i, j), a+Vector((offset,0,0)), b+Vector((offset,0,0)), .006, .27)
-rod('mic_shock_mount', (-.35, .968, -.19), (-.28, 1.024, -.215), .030, .36)
-rod('microphone', (-.35, .968, -.19), (-.255, 1.044, -.225), .023, .27, 24)
+    for j, offset in enumerate([-.010, .010]):
+        rod('boom_%s_%s' % (i, j), a+Vector((offset,0,0)), b+Vector((offset,0,0)), .006, .29)
+rod('mic_shock_mount', (-.34, .865, -.170), (-.275, .914, -.150), .029, .39)
+rod('microphone', (-.35, .856, -.173), (-.25, .934, -.144), .023, .28, 24)
 
 # Case broad glass side faces the chair; the narrower front faces inward.
 box('case_base', (.70, .795, .105), (.43, .11, .21), .80)
@@ -234,10 +237,10 @@ for i in range(6):
     dx = (i-2.5)*.007
     rod('diffuser_reed_' + str(i), (-.16+dx*.3, 1.01, .20), (-.16+dx*1.5, 1.235+(.014 if i%2 else 0), .20), .002, .33, 8)
 
-# Right wall: dartboard near the corner and six empty frames, two rows.
-rod('dartboard_rim', (.947, 1.85, .045), (.921, 1.85, .045), .22, .34, 48)
-rod('dartboard_face', (.920, 1.85, .045), (.917, 1.85, .045), .196, .60, 48)
-rod('dartboard_center', (.916, 1.85, .045), (.913, 1.85, .045), .020, .32, 24)
+# Dartboard on the rear wall right of the window; frames on the adjoining wall.
+rod('dartboard_rim', (.66, 1.85, .314), (.66, 1.85, .288), .22, .34, 48)
+rod('dartboard_face', (.66, 1.85, .287), (.66, 1.85, .284), .196, .60, 48)
+rod('dartboard_center', (.66, 1.85, .283), (.66, 1.85, .280), .020, .32, 24)
 frames = []
 for row, h in enumerate([1.45, 1.81]):
     for col, z in enumerate([-.34, -.63, -.92]):
@@ -254,20 +257,20 @@ box('couch_seat', (-1.86, .34, -.13), (.95, .22, .67), .48)
 box('couch_back', (-1.86, .69, .14), (.95, .50, .15), .50)
 rod('foam_roller', (-1.48, .46, -.01), (-1.53, .89, .075), .064, .60)
 
-anchor('cam_wide', (-.72, 1.63, -2.85), (-.57, 1.12, .03), 38)
+anchor('cam_wide', (-.72, 1.63, -2.85), (-.42, 1.12, .03), 40)
 anchor('cam_main_monitor', (0, 1.105, -.645), (0, 1.105, -.023), 38, 'arc')
 side_normal = Vector((math.sin(math.radians(20)), 0, -math.cos(math.radians(20))))
 side_center = Vector((-.635, 1.15, .015))
 anchor('cam_side_monitor', side_center+side_normal*.720, side_center, 38, 'arc')
-anchor('cam_wall', (-.55, 1.40, -.70), (.94, 1.68, -.36), 40, 'arc')
-anchor('cam_desk_end', (-.42, .94, -.91), (.53, .96, .04), 48)
-anchor('cam_window', (-.67, 1.65, -.67), (-.67, 1.65, .34), 62)
+anchor('cam_wall', (-.68, 1.40, -1.02), (.84, 1.70, -.10), 46, 'arc')
+anchor('cam_desk_end', (-.42, .98, -.91), (.45, .97, .04), 54)
+anchor('cam_window', (-.67, 1.94, -.35), (-.67, 1.64, .32), 94)
 
 scene.render.engine = 'BLENDER_WORKBENCH'
 scene.display.shading.light = 'STUDIO'
 scene.display.shading.studiolight_rotate_z = .35
 scene.display.shading.color_type = 'OBJECT'
-scene.display.shading.show_shadows = True
+scene.display.shading.show_shadows = False
 scene.display.shading.show_cavity = True
 scene.display.shading.cavity_type = 'BOTH'
 scene.display.shading.curvature_ridge_factor = 1.15

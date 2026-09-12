@@ -10,16 +10,19 @@ Claude Code's Issue 4 and are excluded from this lane's PR.
 
 ## Review checkpoint
 
-The initial build follows the coordinate signs in `docs/SCENE-CONTRACT.md`:
-glTF Y up, chair at negative Z, back wall at positive Z, and case/right wall at
-positive X. This creates a left/right reversal from the chair's view in a
-right-handed camera system. The renders expose this unresolved contract issue;
-they are not approved framing or export-ready assets.
+Pau approved correcting the glTF convention to chair at positive Z, back wall
+at negative Z, and right wall at positive X, with Y up. The saved scene and all
+six camera anchors now use that convention. Blender uses +X right, +Y back,
+and +Z up; export converts `(x, y, z)` to glTF `(x, z, -y)`.
 
-The proposed correction is chair at positive Z and back wall at negative Z,
-keeping the right wall at positive X. Pau's decision is pending. The shared
-contract requires its own "Scene contract change" PR reviewed by the web lane.
-No contract edits have been made at this checkpoint.
+The revised block-out also follows Pau's placement corrections: the mic clamp
+is at the front-left end of the desk with the arm reaching inward, and the
+dartboard is on the rear-wall section immediately right of the window. Six
+credential frames remain on the adjoining right wall. These changes are
+documented in a separate "Scene contract change" PR for Claude's review.
+
+The coordinate correction is approved; the revised framing is still awaiting
+Pau's review. No export or materials work has started.
 
 The desk is estimated at 2.10 m wide and 0.64 m deep; its top is 0.74 m above
 the floor. Monitor faces are 0.534 by 0.300 m (main) and 0.598 by 0.336 m (side).
@@ -31,6 +34,7 @@ framing review. The two screen faces are planar quads with 0-to-1 UVs.
 
 `review/` contains the six 1440-by-900 Workbench renders. Shades of gray are
 viewport object colors used for distinguishing geometry, not final materials.
+Workbench cast shadows are disabled so they do not obscure the block-out.
 Case glass is temporarily hidden during rendering to expose its interior; the
 actual addressable mesh remains in the source. Screens and the window are blank.
 
