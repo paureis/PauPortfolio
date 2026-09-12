@@ -33,7 +33,9 @@ Other dimensions remain visual estimates from the photos and room video.
 The video revision brings the monitors closer together, raises the mic arm
 from the front-left clamp, and adds hanging IEMs. Pau's follow-up review squares
 the PC to the back wall, with its glass side chairward, the bottle between the
-case and right wall, and the controller in front of the case. Sill objects remain
+case and right wall, and the controller in front of the case. The case now sits
+10.5 cm farther back, leaving a 3 cm gap behind the mousepad. The bottle is
+aligned with the case's depth center, fully beside its footprint. Sill objects remain
 generic shapes. The couch is a coarse mass on the left. The video and its
 extracted reference frames remain ignored modeling inputs.
 
@@ -42,8 +44,8 @@ named addressable surfaces exist. Material slots are deferred until after
 framing review. The two screen faces are planar quads with 0-to-1 UVs.
 
 `review/` contains six anchor renders plus an orthographic top-down layout view,
-all 1440 by 900. The latest review refreshes wide, side monitor, window, desk end,
-and top-down. Main monitor and wall retain the preceding review images and their
+all 1440 by 900. The latest review refreshes wide, window, desk end, and top-down.
+Side monitor, main monitor, and wall retain the preceding review images and their
 approved camera transforms. Shades of gray are
 viewport object colors used for distinguishing geometry, not final materials.
 Workbench cast shadows are disabled so they do not obscure the block-out.
@@ -60,17 +62,14 @@ actual addressable mesh remains in the source. Screens and the window are blank.
 - `wall.png`: six empty frames in two rows with the dartboard beside them.
 - `desk_end.png`: case, bottle, controller, mouse/pad, and keyboard. The monitors
   obscure the sill figures from this low angle; they are visible in other views.
-- `window.png`: requested 35-degree trial, camera 1.32 m high, about 6 degrees
-  upward pitch. Vertical convergence is mild, but the monitors obscure the sill.
-  This does not yet meet the requested clear-sill/no-monitor composition.
+- `window.png`: elevated long-lens crop toward the left sill, with the three
+  collectible cases visible and monitor backs outside the frame. Pau authorized
+  relaxing camera height and FOV to prioritize composition. The saved glTF
+  position is `(-1.06, 8.0, 3.0)`, aimed at `(-1.06, 1.52, -0.25)`, vertical
+  FOV 5.3 degrees. The long lens reduces frame convergence, but crops the window's
+  right edge and diffuser. This composition is awaiting review, and its long
+  camera travel must be considered when the web lane implements transitions.
 - `top_down.png`: desk footprints, monitor angles, PC orientation, and mic clamp.
-- `window_clear_sill_option.png`: unsaved alternative anchor at glTF
-  `(-0.57, 1.45, 0.05)`, looking level toward the rear wall, vertical FOV 134.
-  This tests clearing the monitors while retaining vertical window edges;
-  nearby sill objects have exaggerated perspective and a monitor edge remains
-  at lower right, so this alternative also fails the clear-sill requirement.
-  It is not the saved
-  `cam_window` and requires Pau's decision to relax the requested lens/height.
 
 All seven images were rendered and visually inspected in the video revision;
 the four requested follow-up views were rendered and inspected again.
@@ -79,6 +78,9 @@ five legs, and both planar screen quads with UV layers. These checks are not the
 export manifest validator, which remains part of the post-approval work.
 Follow-up assertions also verify the case is square to the world axes and the
 side anchor is level, perpendicular, and gives exactly 70% screen height.
+The latest checks confirm the 3 cm pad clearance, case containment on the desktop,
+and bottle footprint fully beside the case. The corresponding renders were
+visually inspected. No material or export work has started.
 
 ## Working in Blender
 
