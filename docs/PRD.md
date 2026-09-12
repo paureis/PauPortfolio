@@ -72,7 +72,7 @@ This section is the reference for the Blender scene. Stylized means proportions 
 **Left to right on the desk.**
 
 1. 27" 240Hz monitor (Acer), on a round stand, angled inward toward the chair. This is the side monitor.
-2. Boom arm clamped to the back edge between the monitors, holding a HyperX QuadCast 2 in a shock mount, lights off. The arm sits in front of and slightly below the screens from the chair's point of view.
+2. Boom arm clamped at the front-left end of the table, on the edge nearest the chair, reaching inward toward the space between the monitors. It holds a HyperX QuadCast 2 in a shock mount, lights off. The arm sits in front of and slightly below the screens from the chair's point of view.
 3. Zowie 24.1" 400Hz monitor, centered, on a flat rectangular stand. Logitech webcam on top. A tall reed diffuser (black sticks in a glass jar) stands on the sill behind and just left of it. This is the main monitor.
 4. Black TKL mechanical keyboard with RGB backlight (pink and blue), centered under the main monitor.
 5. Large black cloth mousepad (Artisan) to the right of the keyboard, with a pink honeycomb-shell gaming mouse.
@@ -80,7 +80,7 @@ This section is the reference for the Blender scene. Stylized means proportions 
 7. NZXT H510 Elite at the far right end of the desk against the right wall: white top and bottom, black tempered glass front and side, NZXT Kraken pump cap visible, GPU with visible branding, a small red numeric readout inside, a WiFi antenna on top.
 8. 40 oz black Takeya Sport bottle beside the case.
 
-**Walls and window.** A large window is directly behind the side monitor, left of the main monitor, with a white roller shade. Vertical LED light strips run down both sides of the window frame. The sill is white marble and holds three FiGPiN collectible figures in cases, a small Among Us figure, and a supplement bottle. A dartboard hangs on the right wall above and to the right of the case. A short vertical LED strip runs on the wall behind the main monitor.
+**Walls and window.** A large window is directly behind the side monitor, left of the main monitor, with a white roller shade. Vertical LED light strips run down both sides of the window frame. The sill is white marble and holds three FiGPiN collectible figures in cases, a small Among Us figure, and a supplement bottle. A dartboard hangs on the rear-wall section immediately right of the window, above the case. The added credential frames sit on the adjoining perpendicular right wall. A short vertical LED strip runs on the wall behind the main monitor.
 
 **Beyond the desk.** A grey couch and a green foam roller sit to the left of the desk with a poster above. To the right beyond the corner: a grey shelf with a router, a figure, and a wall-mounted TV. These are out of frame for every station except possibly the wide shot and can be omitted or blocked in as low-detail masses.
 
